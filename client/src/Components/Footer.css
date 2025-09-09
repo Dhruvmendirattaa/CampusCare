@@ -1,0 +1,17 @@
+footer {
+  padding: 20px 40px;
+  background: #f9fbfd;
+  text-align: left;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+  color: #555;
+}
+
+.crisis {
+  font-weight: bold;
+  color: red;
+}
+.footbtns{
+    background: white;
+    text-align: center;
+}
