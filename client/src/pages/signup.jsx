@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./signup.css";
 
 const Signup = () => {
@@ -15,6 +15,7 @@ const Signup = () => {
     bio: "",
   });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   // 🔹 Age calculation
   const calculateAge = (dob) => {
@@ -39,9 +40,10 @@ const Signup = () => {
     }));
   };
 
-  // 🔹 Submit form
-  const handleSubmit = (e) => {
+  // 🔹 Submit form with API call
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.dob || !formData.username || !formData.password) {
       setError("Please fill in all required fields");
       return;
@@ -50,9 +52,30 @@ const Signup = () => {
       setError("Please fill in Year and Course for the institute");
       return;
     }
-    setError("");
-    console.log("Form Submitted:", formData);
-    // API call yahan karein
+
+    try {
+      const res = await fetch("http://localhost:5000/api/users/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Signup failed");
+        return;
+      }
+
+      // ✅ Save JWT token
+      localStorage.setItem("token", data.token);
+
+      alert("Signup successful!");
+      navigate("/dashboard"); // redirect after signup
+    } catch (err) {
+      console.error("Signup Error:", err);
+      setError("Something went wrong, please try again.");
+    }
   };
 
   return (
@@ -60,14 +83,12 @@ const Signup = () => {
       {/* Left Section with Video Background */}
       <div className="signup-left">
         <video src="/uploads/vdo2.mp4" autoPlay loop muted playsInline />
-        <div className="signup-left-content">
-
-        </div>
+        <div className="signup-left-content"></div>
       </div>
 
       {/* Right Section */}
       <div className="signup-right">
-        <h2>Welcome! Lets Create Your Account</h2>
+        <h2>Welcome! Let's Create Your Account</h2>
         <p>Fill in your details</p>
 
         <form onSubmit={handleSubmit}>
