@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
@@ -16,8 +19,37 @@ const Login = () => {
     }
 
     setError("");
-    console.log("Logging in with:", { username, password });
-    // API call yahan karenge
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      // Save token + user info
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      setLoading(false);
+
+      // Redirect to dashboard
+      navigate("/dashboard");
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,8 +60,6 @@ const Login = () => {
           <source src="/uploads/vdo2.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="login-left-content">
-        </div>
       </div>
 
       {/* ---------- Right Section with Form ---------- */}
@@ -51,8 +81,8 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {error && <span className="error-message">{error}</span>}
-          <button type="submit" className="login-btn">
-            Login
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
