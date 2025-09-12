@@ -1,9 +1,5 @@
 import React from "react";
-/*import HeroSection from "../components/HeroSection";
-import Resources from "../components/Resources";
-import BookingSection from "../components/BookingSection";
-import Chatbot from "../components/Chatbot";*/
-
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
@@ -38,6 +34,18 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      
+
+      {/* Personalise Feed Section */}
+      <section className="personalise">
+        <h2>Personalise Your Feed</h2>
+        <p>Take a quick screening test to customise your experience.</p>
+        <Link to="/Forms">
+          <button className="personalise-btn">Personalise Your Feed</button>
+        </Link>
+      </section>
+
 
       {/* About Section */}
       <section className="about">
