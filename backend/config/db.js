@@ -1,9 +1,8 @@
 // config/db.js
 import mongoose from "mongoose";
-
 const connectDB = async () => {
     try {
-        await mongoose.connect("mongodb://127.0.0.1:27017/CampusCare");
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("✅ Database connected successfully");
     } catch (err) {
         console.error("❌ Connection error:", err.message);
