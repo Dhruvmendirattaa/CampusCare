@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 28px;  /* pehle 16px 40px tha */
+  padding: 10px 28px;
   background: linear-gradient(135deg, #ffffff, #f3f6ff);
   box-shadow: 0 3px 8px rgba(0,0,0,0.06);
   position: sticky;
@@ -13,7 +13,8 @@
 }
 
 .navbar:hover {
-  background: linear-gradient(135deg, #f7faff, #eef3ff);
+  /* Add subtle gradient touch */
+  background: linear-gradient(135deg, #f7faff, #eef3ff, #fbc2eb22);
   box-shadow: 0 5px 12px rgba(0,0,0,0.1);
 }
 
@@ -21,19 +22,29 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 6px; /* thoda gap kam */
-  font-size: 20px; /* pehle 22px tha */
+  gap: 6px;
+  font-size: 20px;
   font-weight: 700;
   color: #4a90e2;
   letter-spacing: 0.6px;
   cursor: pointer;
   text-shadow: 0 0 6px rgba(74,144,226,0.15);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
+/* Gradient shimmer on hover */
+.logo:hover {
+  transform: scale(1.08);
+  background: linear-gradient(135deg, #4a90e2, #a18cd1, #fbc2eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+/* Logo image */
 .logo-img {
-  width: 55px;   /* pehle 80px tha */
-  height: 55px;  /* pehle 80px tha */
+  width: 55px;
+  height: 55px;
   object-fit: contain;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
 }
@@ -42,62 +53,11 @@
 .navbar ul {
   display: flex;
   list-style: none;
-  gap: 22px;  /* pehle 28px tha */
+  gap: 22px;
   margin: 0;
   padding: 0;
 }
 
-.nav-link {
-  text-decoration: none;
-  color: #4a90e2;
-  font-size: 14px; /* thoda chhota */
-  font-weight: 500;
-  position: relative;
-  padding: 4px 0; /* thoda patla */
-  transition: color 0.3s ease;
-}
-/* Nav Buttons */
-.nav-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.nav-buttons button {
-  padding: 6px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  border-radius: 20px;  /* rounded buttons for modern look */
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease, transform 0.2s ease;
-}
-
-/* Login Button – Minimal Outline */
-.login {
-  background: transparent;
-  border: 1.5px solid #6c63ff;
-  color: #6c63ff;
-}
-.login:hover {
-  background: #6c63ff;
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(108, 99, 255, 0.3);
-}
-
-/* Signup Button – Gradient Glow */
-.signup {
-  background: linear-gradient(135deg, #6c63ff, #4a90e2);
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 3px 10px rgba(108, 99, 255, 0.35);
-}
-.signup:hover {
-  background: linear-gradient(135deg, #4a90e2, #6c63ff);
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 5px 14px rgba(108, 99, 255, 0.45);
-}
-/* Nav Links */
 .nav-link {
   text-decoration: none;
   color: #4a90e2;
@@ -108,6 +68,7 @@
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
+/* Gradient underline */
 .nav-link::after {
   content: "";
   position: absolute;
@@ -115,14 +76,14 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: #6c63ff;
+  background: linear-gradient(135deg, #6c63ff, #a18cd1, #fbc2eb);
   border-radius: 2px;
   transition: width 0.3s ease, left 0.3s ease;
 }
 
 .nav-link:hover {
   color: #6c63ff;
-  transform: translateY(-2px); /* thoda upar uthta hai */
+  transform: translateY(-2px);
 }
 
 .nav-link:hover::after {
@@ -131,18 +92,16 @@
 }
 
 .nav-link:active {
-  transform: scale(0.95); /* click feel */
+  transform: scale(0.95);
   color: #4a90e2;
 }
 
-/* Logo hover effect */
-.logo:hover {
-  transform: scale(1.08);
-  color: #6c63ff;
-  text-shadow: 0 0 10px rgba(108,99,255,0.25);
+/* Nav Buttons */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
 }
 
-/* Nav Buttons */
 .nav-buttons button {
   padding: 6px 16px;
   font-size: 13px;
@@ -153,8 +112,34 @@
   transition: all 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
+/* Login Button – Minimal Outline with gradient hover */
+.login {
+  background: transparent;
+  border: 1.5px solid #6c63ff;
+  color: #6c63ff;
+}
+.login:hover {
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(161, 140, 209, 0.4);
+}
+
+/* Signup Button – Gradient Glow updated */
+.signup {
+  background: linear-gradient(135deg, #6c63ff, #4a90e2, #a18cd1);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(108, 99, 255, 0.35);
+}
+.signup:hover {
+  background: linear-gradient(135deg, #4a90e2, #6c63ff, #fbc2eb);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 5px 14px rgba(108, 99, 255, 0.45);
+}
+
 .nav-buttons button:active {
-  transform: scale(0.95); /* click press effect */
+  transform: scale(0.95);
 }
 
 /* Responsive */

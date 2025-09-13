@@ -1,182 +1,144 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import "./Forms.css";
 
+const questionsData = {
+  depression: [
+    "Do you often feel sad or empty?",
+    "Do you lose interest in daily activities?"
+  ],
+  anxiety: [
+    "Feeling nervous, anxious, or on edge?",
+    "Not being able to stop or control worrying?",
+    "Worrying too much about different things?",
+    "Trouble relaxing?",
+    "Being so restless that it is hard to sit still?",
+    "Becoming easily annoyed or irritable?",
+    "Feeling afraid, as if something awful might happen?"
+  ],
+  stress: [
+    "I found it hard to wind down",
+    "I tended to over-react to situations",
+    "I felt that I was using a lot of nervous energy",
+    "I found myself getting agitated",
+    "I found it difficult to relax",
+    "I was intolerant of anything that kept me from getting on with what I was doing",
+    "I felt that I was rather touchy"
+  ]
+};
+
+const optionsData = {
+  depression: ["Never", "Sometimes", "Often", "Always"],
+  anxiety: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+  stress: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"]
+};
+
 const Forms = () => {
-  const [activeForm, setActiveForm] = useState(null); 
+  const [activeForm, setActiveForm] = useState(null);
+  const [currentQ, setCurrentQ] = useState(0);
+  const [answers, setAnswers] = useState({});
+
+  const handleNext = () => {
+    if (answers[currentQ] !== undefined) {
+      setCurrentQ(prev => prev + 1);
+    } else {
+      alert("Please select an option before proceeding.");
+    }
+  };
+
+  const handleChange = (e) => {
+    setAnswers({ ...answers, [currentQ]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (answers[currentQ] === undefined) {
+      alert("Please select an option before submitting.");
+      return;
+    }
+    console.log("User Answers:", answers);
+    alert("Form submitted!");
+    setActiveForm(null);
+    setCurrentQ(0);
+    setAnswers({});
+  };
+
+  const renderForm = () => {
+    if (!activeForm) return null;
+
+    const questions = questionsData[activeForm];
+    const options = optionsData[activeForm];
+    const isLast = currentQ === questions.length - 1;
+
+    return (
+      <section className="form-section">
+        <h2>{activeForm.charAt(0).toUpperCase() + activeForm.slice(1)} Screening</h2>
+        <p className="form-instruction">
+          Answer the following question based on how you have felt recently.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <div className="question">
+            <p className="question-text">{currentQ + 1}. {questions[currentQ]}</p>
+            <div className="options">
+              {options.map((opt, idx) => (
+                <label 
+                  key={idx} 
+                  className={`option-label ${answers[currentQ] === opt ? "selected" : ""}`}
+                >
+                  <input 
+                    type="radio" 
+                    name={`${activeForm}${currentQ}`} 
+                    value={opt} 
+                    checked={answers[currentQ] === opt}
+                    onChange={handleChange} 
+                  /> 
+                  {opt}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="form-navigation">
+            {!isLast && (
+              <button type="button" className="submit-btn" onClick={handleNext}>
+                Next
+              </button>
+            )}
+            {isLast && (
+              <button type="submit" className="submit-btn">
+                Submit
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
+    );
+  };
 
   return (
     <div className="personalise-container">
-      
-      <p> start your quick screening test.</p>
+      <p className="intro-text">
+        Welcome! Take a few minutes to complete your quick mental health screening. 
+        Choose a category below to get started. Your responses are private and will 
+        help you understand your current mental state.
+      </p>
 
-      {/* Buttons */}
       <div className="form-buttons">
-        <button onClick={() => setActiveForm("depression")}>Depression</button>
-        <button onClick={() => setActiveForm("anxiety")}>Anxiety</button>
-        <button onClick={() => setActiveForm("stress")}>Stress</button>
+        {["depression", "anxiety", "stress"].map(type => (
+          <button 
+            key={type} 
+            onClick={() => { setActiveForm(type); setCurrentQ(0); setAnswers({}); }}
+          >
+            {type.charAt(0).toUpperCase() + type.slice(1)} 
+            <span className="btn-info">
+              {type === "depression" ? "(Mood & Interest)" : type === "anxiety" ? "(Worry & Tension)" : "(Pressure & Relaxation)"}
+            </span>
+          </button>
+        ))}
       </div>
 
-      {/* Depression Form */}
-      {activeForm === "depression" && (
-        <section className="form-section">
-          <h2>Depression Screening</h2>
-          <form onSubmit={(e) => { e.preventDefault(); alert(" form submitted!"); }}>
-            <div className="question">
-              <p>1. Do you often feel sad or empty?</p>
-              <label><input type="radio" name="dep1" /> Never</label>
-              <label><input type="radio" name="dep1" /> Sometimes</label>
-              <label><input type="radio" name="dep1" /> Often</label>
-              <label><input type="radio" name="dep1" /> Always</label>
-            </div>
-
-            <div className="question">
-              <p>2. Do you lose interest in daily activities?</p>
-              <label><input type="radio" name="dep2" /> Never</label>
-              <label><input type="radio" name="dep2" /> Sometimes</label>
-              <label><input type="radio" name="dep2" /> Often</label>
-              <label><input type="radio" name="dep2" /> Always</label>
-            </div>
-
-            <button type="submit" className="submit-btn">Submit</button>
-          </form>
-        </section>
-      )}
-
-      {/* Anxiety Form */}
-      {activeForm === "anxiety" && (
-        <section className="form-section">
-          <h2>Anxiety Screening</h2>
-          <form onSubmit={(e) => { e.preventDefault(); alert(" form submitted!"); }}>
-            <div className="question">
-              <p>1. Feeling nervous, anxious, or on edge  </p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-
-            <div className="question">
-              <p>2. Not being able to stop or control worrying  </p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-
-            <div className="question">
-              <p>3. Worrying too much about different things?</p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-
-            <div className="question">
-              <p>4. Trouble relaxing  </p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-            
-            <div className="question">
-              <p>5. Being so restless that it is hard to sit still  </p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-            
-            <div className="question">
-              <p>6. Becoming easily annoyed or irritable</p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-
-            <div className="question">
-              <p>7. Feeling afraid, as if something awful might happen  </p>
-              <label><input type="radio" name="anx1" /> Not at all  </label>
-              <label><input type="radio" name="anx1" /> Several days  </label>
-              <label><input type="radio" name="anx1" /> More than half the days</label>
-              <label><input type="radio" name="anx1" /> Nearly every day </label>
-            </div>
-
-
-
-            <button type="submit" className="submit-btn">Submit</button>
-          </form>
-        </section>
-      )}
-
-      {/* Stress Form */}
-      {activeForm === "stress" && (
-        <section className="form-section">
-          <h2>Stress Screening</h2>
-          <form onSubmit={(e) => { e.preventDefault(); alert("form submitted!"); }}>
-            <div className="question">
-              <p>1. I found it hard to wind down</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-
-           <div className="question">
-              <p>2. I tended to over-react to situations</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-
-            <div className="question">
-              <p>3. I felt that I was using a lot of nervous energy</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-
-            <div className="question">
-              <p>4. I found myself getting agitated</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-
-            <div className="question">
-              <p>5. I found it difficult to relax</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-
-            <div className="question">
-              <p>6. I was intolerant of anything that kept me from getting on with what I was doing</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-
-            <div className="question">
-              <p>7.I felt that I was rather touchy</p>
-              <label><input type="radio" name="str1" /> Did Not Apply To Me At All</label>
-              <label><input type="radio" name="str1" /> Applied To Me To Some Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me To A Considerable Degree</label>
-              <label><input type="radio" name="str1" /> Applied To Me Very Much</label>
-            </div>
-            <button type="submit" className="submit-btn">Submit</button>
-          </form>
-        </section>
-      )}
+      {renderForm()}
     </div>
   );
 };
-
 
 export default Forms;

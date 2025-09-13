@@ -1,6 +1,6 @@
 import React from "react";
 import "./Home.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 
 const Feature = ({ title, text, icon }) => (
   <div className="feature-card" role="article" aria-label={title}>
@@ -13,16 +13,10 @@ const Feature = ({ title, text, icon }) => (
 );
 
 const Home = () => {
+  const navigate = useNavigate(); 
+
   return (
-
-    
-
-
     <main className="home-container">
-
-
-     
-
       {/* HERO with background video */}
       <section className="hero" aria-labelledby="hero-title">
         <video className="hero-video" autoPlay muted loop playsInline>
@@ -38,8 +32,15 @@ const Home = () => {
             all in one <span className="highlight">student-first</span> platform.
           </p>
           <div className="hero-actions">
-            <button className="hero-btn primary glow">🚀 Get Started</button>
-            <button className="hero-btn ghost">✨ Learn More</button>
+            <Link to="/Forms">
+              <button className="hero-btn primary glow">
+                🚀 Personalise Your Feed
+              </button>
+            </Link>
+            <Link to ="/appointment">
+          
+            <button className="hero-btn ghost glow">✨ Book An Appointment Now </button>
+              </Link>
           </div>
         </div>
 
@@ -48,18 +49,6 @@ const Home = () => {
         <div className="blob b2"></div>
         <div className="blob b3"></div>
       </section>
-
-
-       {/*personalised button*/}
-      <section className="personalise">
-         <h2>Personalise Your Feed</h2>
-         <p>Take a quick screening test to customise your experience.</p>
-         <br></br>
-         <Link to="/Forms">
-        <button className="personalise-btn">Personalise Your Feed</button>
-        </Link>
-      </section>
-
 
       {/* FEATURES */}
       <section className="features" aria-labelledby="features-title">
@@ -88,8 +77,6 @@ const Home = () => {
         </div>
       </section>
 
-
-     
       {/* CHATROOM */}
       <section className="chatroom" aria-labelledby="chatroom-title">
         <h2 id="chatroom-title">💬 Student ChatRoom</h2>
@@ -109,24 +96,6 @@ const Home = () => {
           <div className="game-card">🎵 Music Quiz</div>
           <div className="game-card">🖌️ Drawing Pad</div>
           <div className="game-card">🧘 Meditation Timer</div>
-        </div>
-      </section>
-
-      {/* CALENDAR + SESSIONS */}
-      <section className="calendar" aria-labelledby="calendar-title">
-        <h2 id="calendar-title">📅 Book Your Session</h2>
-        <p>Schedule appointments or join live online wellbeing sessions.</p>
-        <div className="calendar-box">
-          <input type="date" />
-          <button className="signup-btn">Book Now</button>
-        </div>
-        <div className="sessions">
-          <h3>Upcoming Live Sessions</h3>
-          <ul>
-            <li>🌐 Stress Management Workshop — 15 Sept, 5 PM</li>
-            <li>💡 Productivity Hacks Webinar — 18 Sept, 7 PM</li>
-            <li>🧘 Guided Meditation — 20 Sept, 6 PM</li>
-          </ul>
         </div>
       </section>
 
@@ -161,9 +130,20 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Floating Appointment Button */}
+      <button
+        className="fab-btn appointment-btn"
+        aria-label="Book Appointment"
+        onClick={() => navigate("/appointment")}
+      >
+        <i className="fas fa-calendar-alt"></i>
+        <span className="tooltip">Book your appointment now</span>
+      </button>
+
       {/* Floating Chatbot Button */}
-      <button className="chatbot-btn" aria-label="Open Chatbot">
-        <i className="fas fa-comment-dots"></i>
+      <button className="fab-btn chatbot-btn" aria-label="Chatbot">
+        <i className="fas fa-comments"></i>
+        <span className="tooltip">Chatbot</span>
       </button>
     </main>
   );
