@@ -1,107 +1,171 @@
+/* Navbar Container */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 40px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 10px 28px;  /* pehle 16px 40px tha */
+  background: linear-gradient(135deg, #ffffff, #f3f6ff);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background 0.4s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+
+.navbar:hover {
+  background: linear-gradient(135deg, #f7faff, #eef3ff);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+}
+
+/* Logo Area */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* thoda gap kam */
+  font-size: 20px; /* pehle 22px tha */
+  font-weight: 700;
+  color: #4a90e2;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  text-shadow: 0 0 6px rgba(74,144,226,0.15);
+  transition: transform 0.3s ease;
 }
 
 .logo-img {
-  width: 36px;
-  height: 36px;
+  width: 55px;   /* pehle 80px tha */
+  height: 55px;  /* pehle 80px tha */
   object-fit: contain;
-}
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-  color: #1caa95;
-  letter-spacing: 0.5px;
-  cursor: pointer;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
 }
 
-
+/* Nav Links */
 .navbar ul {
   display: flex;
   list-style: none;
-  gap: 24px;
+  gap: 22px;  /* pehle 28px tha */
   margin: 0;
   padding: 0;
 }
 
-
 .nav-link {
   text-decoration: none;
-  color: #1caa95;
-  font-size: 15px;
+  color: #4a90e2;
+  font-size: 14px; /* thoda chhota */
   font-weight: 500;
-  padding: 6px 0;
   position: relative;
-  transition: all 0.3s ease;
+  padding: 4px 0; /* thoda patla */
+  transition: color 0.3s ease;
 }
-
-
-.nav-link:hover {
-  color: #007bff;
-}
-
-
-.nav-link.active {
-  color: #007bff;
-  font-weight: bold;
-}
-
-
-.nav-link.active::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #007bff;
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-
+/* Nav Buttons */
 .nav-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .nav-buttons button {
-  padding: 8px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
+  padding: 6px 16px;
+  font-size: 13px;
   font-weight: 500;
-  transition: all 0.3s ease;
+  border-radius: 20px;  /* rounded buttons for modern look */
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease, transform 0.2s ease;
 }
 
-
+/* Login Button – Minimal Outline */
 .login {
   background: transparent;
-  border: 1px solid #007bff;
-  color: #007bff;
+  border: 1.5px solid #6c63ff;
+  color: #6c63ff;
 }
-
 .login:hover {
-  background: #007bff;
+  background: #6c63ff;
   color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(108, 99, 255, 0.3);
 }
 
-
+/* Signup Button – Gradient Glow */
 .signup {
-  background: #007bff;
-  color: white;
-  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+  background: linear-gradient(135deg, #6c63ff, #4a90e2);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(108, 99, 255, 0.35);
+}
+.signup:hover {
+  background: linear-gradient(135deg, #4a90e2, #6c63ff);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 5px 14px rgba(108, 99, 255, 0.45);
+}
+/* Nav Links */
+.nav-link {
+  text-decoration: none;
+  color: #4a90e2;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.signup:hover {
-  background: #0056b3;
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #6c63ff;
+  border-radius: 2px;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #6c63ff;
+  transform: translateY(-2px); /* thoda upar uthta hai */
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.nav-link:active {
+  transform: scale(0.95); /* click feel */
+  color: #4a90e2;
+}
+
+/* Logo hover effect */
+.logo:hover {
+  transform: scale(1.08);
+  color: #6c63ff;
+  text-shadow: 0 0 10px rgba(108,99,255,0.25);
+}
+
+/* Nav Buttons */
+.nav-buttons button {
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.nav-buttons button:active {
+  transform: scale(0.95); /* click press effect */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+  .navbar ul {
+    gap: 16px;
+  }
+  .logo {
+    font-size: 20px;
+  }
 }

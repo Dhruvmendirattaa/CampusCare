@@ -5,17 +5,15 @@ import "./navbar.css";
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <div className="logo"> 
-          <img
-            src="C:\Campuscare\client\public\logo.png"   
-            alt="CampusCare Logo"
-            className="logo-img"
-          />
-          
-            <p >CampusCare </p>
-          
-
+      <div className="logo">
+        <img
+          src="/uploads/logo.png"  // Public folder ka relative path
+          alt="CampusCare Logo"
+          className="logo-img"
+        />
+        <p>CampusCare</p>
       </div>
+
       <ul>
         <li>
           <NavLink to="/" className="nav-link" end>
@@ -43,6 +41,7 @@ const Navbar = () => {
           </NavLink>
         </li>
       </ul>
+
       <div className="nav-buttons">
         <NavLink to="/login">
           <button className="login">Login</button>

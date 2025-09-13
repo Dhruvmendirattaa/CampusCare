@@ -8,12 +8,12 @@ const Footer = () => {
       <p>
         If in crisis call: <span className="crisis">+1 800 123 456</span>
       </p>
-      <span className="footbtns">
+
+      <div className="footbtns">
         <button>About</button>
         <button>Privacy Policy</button>
         <button>Help</button>
-      </span>
-      
+      </div>
     </footer>
   );
 };
