@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="logo">
         <img
-          src="/uploads/logo.png"  // Public folder ka relative path
+          src="/uploads/logo.png"  
           alt="CampusCare Logo"
           className="logo-img"
         />
@@ -31,7 +31,7 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/peer-support" className="nav-link">
+          <NavLink to="/group-chat" className="nav-link">
            Peer Support
           </NavLink>
         </li>
