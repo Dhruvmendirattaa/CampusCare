@@ -58,6 +58,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       maxlength: [200, "Bio cannot exceed 200 characters"],
     },
+    role: {
+      type: String,
+      enum: ["student", "teacher"],
+      default: "student",
+    },
   },
   { timestamps: true }
 );

@@ -2,15 +2,16 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+// Generate token with role included
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 export const signupUser = async (req, res) => {
   try {
     const { name, dob, age, institute, year, course, username, password, bio } = req.body;
 
-    // Check existing user
+    // Check if username exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: "Username already exists" });
@@ -19,7 +20,7 @@ export const signupUser = async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Save new user
+    // 🔹 Role is always "student" when signing up
     const newUser = new User({
       name,
       dob,
@@ -30,6 +31,7 @@ export const signupUser = async (req, res) => {
       username,
       password: hashedPassword,
       bio,
+      role: "student",
     });
 
     await newUser.save();
@@ -40,8 +42,9 @@ export const signupUser = async (req, res) => {
         id: newUser._id,
         username: newUser.username,
         name: newUser.name,
+        role: newUser.role,
       },
-      token: generateToken(newUser._id),
+      token: generateToken(newUser._id, newUser.role),
     });
   } catch (error) {
     console.error("Signup Error:", error);
@@ -67,8 +70,9 @@ export const loginUser = async (req, res) => {
         id: user._id,
         username: user.username,
         name: user.name,
+        role: user.role,
       },
-      token: generateToken(user._id),
+      token: generateToken(user._id, user.role),
     });
   } catch (error) {
     console.error("Login Error:", error);
