@@ -6,6 +6,8 @@ import Login from "./pages/login";
 import Signup from "./pages/signup"; // <-- Signup import kiya
 import CounsellorSessions from "./pages/CounsellorSessions";
 import Dashboard from "./pages/Dashboard";
+import Forms from "./pages/Forms"; 
+
 
 function App() {
   return (
@@ -16,9 +18,13 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} /> {/* <-- Signup route */}
-            <Route path="/counsellor-sessions" element={<CounsellorSessions />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/counsellor-sessions" element={<CounsellorSessions/>}/>
+            <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="/signup" element={<Signup/>}/>
+            <Route path="/Forms" element={<Forms />} /> 
+            
+            
+            
           </Routes>
         </div>
         <Footer />

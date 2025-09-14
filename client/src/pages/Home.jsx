@@ -1,5 +1,6 @@
 import React from "react";
 import "./Home.css";
+import { Link } from "react-router-dom";
 
 const Feature = ({ title, text, icon }) => (
   <div className="feature-card" role="article" aria-label={title}>
@@ -13,7 +14,15 @@ const Feature = ({ title, text, icon }) => (
 
 const Home = () => {
   return (
+
+    
+
+
     <main className="home-container">
+
+
+     
+
       {/* HERO with background video */}
       <section className="hero" aria-labelledby="hero-title">
         <video className="hero-video" autoPlay muted loop playsInline>
@@ -39,6 +48,18 @@ const Home = () => {
         <div className="blob b2"></div>
         <div className="blob b3"></div>
       </section>
+
+
+       {/*personalised button*/}
+      <section className="personalise">
+         <h2>Personalise Your Feed</h2>
+         <p>Take a quick screening test to customise your experience.</p>
+         <br></br>
+         <Link to="/Forms">
+        <button className="personalise-btn">Personalise Your Feed</button>
+        </Link>
+      </section>
+
 
       {/* FEATURES */}
       <section className="features" aria-labelledby="features-title">
@@ -67,6 +88,8 @@ const Home = () => {
         </div>
       </section>
 
+
+     
       {/* CHATROOM */}
       <section className="chatroom" aria-labelledby="chatroom-title">
         <h2 id="chatroom-title">💬 Student ChatRoom</h2>

@@ -441,3 +441,30 @@
   .hero { padding: 56px 18px; }
   .hero-inner p { font-size: 0.98rem; }
 }
+
+
+/*Personalise your feed*/
+
+.personalise {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f5f9ff;
+  border-radius: 8px;
+  margin: 40px auto;
+  max-width: 800px;
+}
+
+.personalise-btn {
+  padding: 15px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.personalise-btn:hover {
+  background: #0056b3;
+}
