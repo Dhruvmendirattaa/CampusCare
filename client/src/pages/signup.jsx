@@ -5,11 +5,13 @@ import "./signup.css";
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
+    nickname: "",
     dob: "",
     age: "",
     institute: "",
     year: "",
     course: "",
+    role: "student", // 🔹 Default role
     username: "",
     password: "",
     bio: "",
@@ -44,11 +46,18 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.dob || !formData.username || !formData.password) {
+    // Required fields validation
+    if (!formData.name || !formData.nickname || !formData.dob || !formData.username || !formData.password) {
       setError("Please fill in all required fields");
       return;
     }
-    if (formData.institute && (!formData.year || !formData.course)) {
+
+    // Validate student fields only if role = student and institute is provided
+    if (
+      formData.role === "student" &&
+      formData.institute &&
+      (!formData.year || !formData.course)
+    ) {
       setError("Please fill in Year and Course for the institute");
       return;
     }
@@ -67,11 +76,10 @@ const Signup = () => {
         return;
       }
 
-      // ✅ Save JWT token
       localStorage.setItem("token", data.token);
 
       alert("Signup successful!");
-      navigate("/dashboard"); // redirect after signup
+      navigate("/dashboard");
     } catch (err) {
       console.error("Signup Error:", err);
       setError("Something went wrong, please try again.");
@@ -92,6 +100,7 @@ const Signup = () => {
         <p>Fill in your details</p>
 
         <form onSubmit={handleSubmit}>
+          {/* Full Name */}
           <input
             type="text"
             name="name"
@@ -99,6 +108,21 @@ const Signup = () => {
             value={formData.name}
             onChange={handleChange}
           />
+
+          {/* Nickname */}
+          <input
+            type="text"
+            name="nickname"
+            placeholder="Nickname (Display Name) *"
+            value={formData.nickname}
+            onChange={handleChange}
+          />
+
+          {/* Role Selection */}
+          <select name="role" value={formData.role} onChange={handleChange}>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+          </select>
 
           <input
             type="date"
@@ -124,7 +148,8 @@ const Signup = () => {
             onChange={handleChange}
           />
 
-          {formData.institute && (
+          {/* Year and Course shown only for students */}
+          {formData.role === "student" && formData.institute && (
             <>
               <input
                 type="text"

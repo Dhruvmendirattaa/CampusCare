@@ -31,13 +31,13 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/solutions" className="nav-link">
-            Solutions
+          <NavLink to="/peer-support" className="nav-link">
+           Peer Support
           </NavLink>
         </li>
         <li>
-          <NavLink to="/chatbot" className="nav-link">
-            Chatbot
+          <NavLink to="/resource-hub" className="nav-link">
+            Resource Hub
           </NavLink>
         </li>
       </ul>

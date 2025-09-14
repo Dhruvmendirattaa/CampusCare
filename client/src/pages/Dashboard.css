@@ -1,0 +1,172 @@
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(160deg, #f0f4ff, #d9e4ff);
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 1250px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffffaa;
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c136c;
+  font-size: 2.5rem;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.tabs button {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 30px;
+  background: #e0e0ff;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #4a4a4a;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.tabs button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Tab Content */
+.tab-container {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  min-height: 350px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* Headings */
+.tab-content h2 {
+  margin-bottom: 20px;
+  color: #2c136c;
+  font-size: 1.8rem;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Lists */
+.tab-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tab-content li {
+  margin-bottom: 12px;
+  background: #f0f0ff;
+  padding: 12px 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.tab-content li:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Diary & Inputs */
+textarea, .tab-content input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 20px;
+  border: 1px solid #d0d0ff;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+textarea:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: #6a11cb;
+  box-shadow: 0 0 15px rgba(106,17,203,0.2);
+}
+
+/* Buttons */
+.tab-content button {
+ 
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  font-weight: 400;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.tab-content button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Avatar */
+.avatar-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 4px solid #6a11cb;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.avatar-img:hover {
+  transform: rotate(10deg) scale(1.05);
+}
+
+/* Nickname */
+.tab-content input[type="text"] {
+  width: 70%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-content input[type="text"] {
+    width: 100%;
+  }
+}

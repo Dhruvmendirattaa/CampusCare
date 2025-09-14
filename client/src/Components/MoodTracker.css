@@ -1,0 +1,41 @@
+.mood-container {
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  min-height: 100vh;
+  text-align: center;
+}
+
+.mood-options {
+  margin-top: 1.5rem;
+}
+
+.mood-btn {
+  font-size: 2rem;
+  margin: 0.5rem;
+  padding: 1rem;
+  border: none;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.mood-btn:hover {
+  transform: scale(1.2);
+  background: #ffedff;
+}
+
+.mood-btn.active {
+  background: #ff4de1;
+  color: white;
+}
+
+.mood-result {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1rem;
+  border-radius: 10px;
+  display: inline-block;
+}
