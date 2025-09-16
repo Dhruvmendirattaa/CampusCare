@@ -1,0 +1,67 @@
+.teacher-login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.teacher-login-container h2 {
+  margin-bottom: 20px;
+  color: #1c3d5a;
+}
+
+.teacher-login-container p {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.teacher-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.teacher-login-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.teacher-login-form input:focus {
+  border: 1px solid #007bff;
+}
+
+.teacher-login-form button {
+  padding: 12px;
+  background: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.teacher-login-form button:hover {
+  background: #0056b3;
+}
+
+.teacher-login-link {
+  margin-top: 15px;
+  display: block;
+  font-size: 0.9rem;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.teacher-login-link:hover {
+  text-decoration: underline;
+}

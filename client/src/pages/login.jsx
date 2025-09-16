@@ -89,11 +89,18 @@ const Login = () => {
         <p className="signup-text">
           Don’t have an account? <Link to="/signup">Sign up now</Link>
         </p>
+         <p style={{ marginTop: "15px" }}>
+        
+        <Link to="/teacher-login" style={{ color: "#5843adff", textDecoration: "none", fontWeight: "bold" }}>
+          Login as Teacher / Counsellor
+        </Link>
+      </p>
 
         <div className="footer-links">
           <Link to="/privacy">Privacy Policy</Link>
           <Link to="/cookies">Cookies Settings</Link>
         </div>
+        
       </div>
     </div>
   );

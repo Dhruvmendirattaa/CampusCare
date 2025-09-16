@@ -126,6 +126,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/navbar";
+import TeacherNavbar from "./Components/TeacherNavbar";
 import Footer from "./Components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/login";
@@ -136,6 +137,8 @@ import AppointmentPage from "./pages/appointmentBooking";
 import ResourceHub from "./pages/resourceHub";
 import Forms from "./pages/Forms";
 import GroupChat from "./pages/groupchat";
+import TeacherLogin from "./pages/TeacherLogin";
+
 // ...
 
 
@@ -146,14 +149,16 @@ import MoodTracker from "./Components/MoodTracker";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function App() {
+  const role = localStorage.getItem("role"); 
   return (
     <Router>
       <div className="app-container">
-        <Navbar />
+        {role === "teacher" ? <TeacherNavbar /> : <Navbar />}
         <div className="content">
           <Routes>
             {/* Main Pages */}
             <Route path="/" element={<Home />} />
+            <Route path="/teacher-login" element={<TeacherLogin/>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/counsellor-sessions" element={<CounsellorSessions />} />
