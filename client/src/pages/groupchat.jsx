@@ -1,207 +1,182 @@
+// client/src/components/GroupChat.jsx
 import React, { useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
+import axiosInstance from "../axiosInstance.js"; // ⬅️ central axios
 import "./groupchat.css";
 
-const STORAGE_KEY = "groupChatMessages";
-const USER_KEY = "user";
-
-const makeId = () =>
-  Math.random().toString(36).substring(2, 9) + "-" + Date.now().toString(36);
-
-const loadMessages = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    console.error("Could not parse messages", e);
-    return [];
-  }
-};
-
-const saveMessages = (messages) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-  window.dispatchEvent(new Event("storage"));
-};
-
-// ✅ Helper to get initials
-const getInitials = (name) => {
-  if (!name) return "";
-  const words = name.trim().split(" ");
-  if (words.length === 1) return words[0][0].toUpperCase();
-  return (words[0][0] + words[words.length - 1][0]).toUpperCase();
-};
-
-// Optional: color generator based on username
-const getColor = (name) => {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  const c = (hash & 0x00ffffff).toString(16).toUpperCase();
-  return "#" + "00000".substring(0, 6 - c.length) + c;
-};
+const SOCKET_URL = "http://localhost:5000";
 
 const GroupChat = () => {
-  const [messages, setMessages] = useState(() => loadMessages());
+  const [groupId, setGroupId] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [replyTo, setReplyTo] = useState(null);
-  const [user, setUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(USER_KEY));
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(null);
   const messagesEndRef = useRef(null);
+  const socketRef = useRef(null);
 
-  // Dummy user if none exists
+  // Load user from localStorage
   useEffect(() => {
-    const existing = localStorage.getItem(USER_KEY);
-    if (!existing) {
-      const dummy = { username: "demoStudent", role: "student" };
-      localStorage.setItem(USER_KEY, JSON.stringify(dummy));
-      setUser(dummy);
+    try {
+      const stored = localStorage.getItem("user");
+      if (stored) setUser(JSON.parse(stored));
+    } catch {
+      setUser(null);
     }
   }, []);
 
+  // Fetch groupId
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
+    axiosInstance
+      .get("/groups/id")
+      .then((res) => {
+        if (res?.data?.groupId) setGroupId(res.data.groupId);
+      })
+      .catch((err) => console.error("❌ Error fetching groupId:", err));
+  }, []);
+
+  // Fetch messages + setup socket
+  useEffect(() => {
+    if (!user || !groupId) return;
+
+    // 1. Load old messages
+    axiosInstance
+      .get(`/messages/${groupId}`)
+      .then((res) => setMessages(res.data))
+      .catch((err) => console.error("❌ Error fetching messages:", err));
+
+    // 2. Setup socket
+    socketRef.current = io(SOCKET_URL, {
+      auth: { token: localStorage.getItem("token") },
+    });
+
+    socketRef.current.emit("joinGroup", groupId);
+
+    socketRef.current.on("newMessage", (msg) => {
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === msg._id)) return prev; // 🚫 avoid duplicates
+        return [...prev, msg];
+      });
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, [user, groupId]);
+
+  // Auto scroll
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(() => {
-    const onStorage = () => setMessages(loadMessages());
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
-
-  const handleSend = (e) => {
+  // Send message
+  const handleSend = async (e) => {
     e?.preventDefault();
-    if (!user || !user.username) {
-      alert("Please login/signup first to send messages.");
-      return;
+    if (!text.trim()) return;
+
+    try {
+      const res = await axiosInstance.post(`/messages/${groupId}`, {
+        message: text,
+        replyTo: replyTo?._id || null,
+      });
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === res.data._id)) return prev;
+        return [...prev, res.data];
+      });
+      setText("");
+      setReplyTo(null);
+    } catch (err) {
+      console.error("❌ Error sending message:", err.response?.data || err.message);
     }
-    const trimmed = text.trim();
-    if (!trimmed) return;
-
-    const msg = {
-      id: makeId(),
-      username: user.username,
-      text: trimmed,
-      time: Date.now(),
-      replyToId: replyTo ? replyTo.id : null,
-      replyToUsername: replyTo ? replyTo.username : null,
-    };
-
-    const newMessages = [...messages, msg];
-    setMessages(newMessages);
-    saveMessages(newMessages);
-
-    setText("");
-    setReplyTo(null);
   };
 
-  const handleReply = (msg) => {
-    setReplyTo({ id: msg.id, username: msg.username, text: msg.text });
-    document.getElementById("chat-input")?.focus();
-  };
-
-  const handleDelete = (id) => {
-    if (!user || user.username !== messages.find((m) => m.id === id)?.username) {
-      if (!user) { alert("Login to delete your messages."); return; }
-      alert("You can only delete your own messages.");
-      return;
+  // Delete message
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`/messages/${groupId}/${id}`);
+      setMessages((prev) => prev.filter((m) => m._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || "Delete failed");
     }
-    if (!window.confirm("Delete this message?")) return;
-    const filtered = messages.filter((m) => m.id !== id);
-    setMessages(filtered);
-    saveMessages(filtered);
   };
 
-  const formatTime = (ts) => {
-    const d = new Date(ts);
-    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
+  const handleReply = (msg) => setReplyTo(msg);
+
+  const formatTime = (ts) =>
+    new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  // ✅ Helper: prefer nickname → username → name
+  const displayName = (sender) =>
+    sender?.nickname || sender?.username || sender?.name || "Unknown";
 
   return (
     <div className="chat-wrap">
       <div className="chat-header">
         <h2>Group Chat</h2>
         <p className="chat-sub">
-          {user?.username
-            ? `Signed in as ${user.username}`
-            : "You are not signed in. Signup/login to chat."}
+          {user ? `Signed in as ${displayName(user)}` : "Login to chat"}
         </p>
       </div>
 
       <div className="chat-main">
         <div className="messages">
-          {messages.length === 0 && (
-            <div className="empty">No messages yet — be the first to say hi 👋</div>
-          )}
-
-          {messages.map((m) => (
-            <div key={m.id} className={`message ${user?.username === m.username ? "mine" : ""}`}>
+          {messages.map((m, idx) => (
+            <div
+              key={m._id || `${m.senderId?._id}-${m.createdAt}-${idx}`} // ✅ unique key
+              className={`message ${m.senderId?._id === user?._id ? "mine" : ""}`}
+            >
               <div className="msg-top">
-                <div className="avatar" style={{ background: getColor(m.username) }}>
-                  {getInitials(m.username)}
-                </div>
-                <span className="msg-user">{m.username}</span>
-                <span className="msg-time">{formatTime(m.time)}</span>
+                <span className="msg-user">{displayName(m.senderId)}</span>
+                <span className="msg-time">{formatTime(m.createdAt)}</span>
               </div>
 
-              {m.replyToId && (
+              {m.replyTo && (
                 <div className="msg-quote">
-                  <strong>@{m.replyToUsername}</strong>:{" "}
-                  {(() => {
-                    const original = messages.find((x) => x.id === m.replyToId);
-                    return original
-                      ? original.text.slice(0, 120) + (original.text.length > 120 ? "…" : "")
-                      : "";
-                  })()}
+                  Replying to @{displayName(m.replyTo.senderId)}:{" "}
+                  {m.replyTo.message}
                 </div>
               )}
 
-              <div className="msg-text">{m.text}</div>
+              <div className="msg-text">{m.message}</div>
 
               <div className="msg-actions">
-                <button className="action" onClick={() => handleReply(m)}>Reply</button>
-                <button className="action" onClick={() => {
-                  setText(prev => prev ? prev + ` @${m.username} ` : `@${m.username} `);
-                  document.getElementById("chat-input")?.focus();
-                }}>Mention</button>
-                <button className="action delete" onClick={() => handleDelete(m.id)}>Delete</button>
+                <button onClick={() => handleReply(m)}>Reply</button>
+                {(m.senderId?._id === user?._id || user?.role === "teacher") && (
+                  <button
+                    className="delete"
+                    onClick={() => handleDelete(m._id)}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
           ))}
-
           <div ref={messagesEndRef} />
         </div>
 
         <form className="chat-input-area" onSubmit={handleSend}>
           {replyTo && (
             <div className="reply-preview">
-              Replying to <strong>@{replyTo.username}</strong>: "
-              {replyTo.text.length > 80 ? replyTo.text.slice(0, 80) + "…" : replyTo.text}"
-              <button type="button" className="cancel-reply" onClick={() => setReplyTo(null)}>✕</button>
+              Replying to <strong>@{displayName(replyTo.senderId)}</strong>: "
+              {replyTo.message.length > 80
+                ? replyTo.message.slice(0, 80) + "…"
+                : replyTo.message}
+              "
+              <button type="button" onClick={() => setReplyTo(null)}>
+                ✕
+              </button>
             </div>
           )}
-
           <textarea
-            id="chat-input"
-            placeholder={user?.username ? "Type a message... (Enter to send)" : "Login to send messages"}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            disabled={!user?.username}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
+            placeholder={user ? "Type a message..." : "Login to send messages"}
+            disabled={!user}
           />
-
-          <div className="send-row">
-            <button type="button" className="send-btn" onClick={handleSend} disabled={!user?.username}>Send</button>
-          </div>
+          <button type="submit" disabled={!user || !groupId}>
+            Send
+          </button>
         </form>
       </div>
     </div>

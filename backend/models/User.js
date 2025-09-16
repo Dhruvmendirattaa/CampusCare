@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["1st", "2nd", "3rd", "4th", "5th", "Other"],
       default: "Other",
+      required: false,
     },
     course: {
       type: String,

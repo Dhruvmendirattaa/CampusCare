@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import userRoutes from "./routes/userRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
+import { createGeneralGroup } from "./controller/groupController.js"; // ✅ import function
 
 dotenv.config();
 
@@ -41,7 +42,12 @@ app.use("/api/messages", messageRoutes);
 // ✅ MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI, {})
-  .then(() => console.log("✅ MongoDB connected"))
+  .then(async () => {
+    console.log("✅ MongoDB connected");
+
+    // Ensure "General Student Group" exists on startup
+    await createGeneralGroup();
+  })
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err.message);
     process.exit(1);
@@ -51,7 +57,7 @@ mongoose
 io.on("connection", (socket) => {
   console.log("🟢 New client connected:", socket.id);
 
-  // Join a group room
+  // Join the general group room (always the same group)
   socket.on("joinGroup", (groupId) => {
     socket.join(groupId);
     console.log(`📌 User joined group: ${groupId}`);
@@ -59,7 +65,6 @@ io.on("connection", (socket) => {
 
   // When a message is sent directly via socket (optional)
   socket.on("sendMessage", (data) => {
-    // Emit the message to all in the group
     io.to(data.groupId).emit("newMessage", data);
   });
 
