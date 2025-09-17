@@ -1,43 +1,53 @@
-
 import React, { useState } from "react";
 import "./Forms.css";
 
-
 const questionsData = {
   depression: [
-    "Do you often feel sad or empty?",
-    "Do you lose interest in daily activities?"
+    { text: "Age", options: ["18-19", "20-21", "22-23", "24-25", "25+"] },
+    { text: "Gender", options: ["Male", "Female", "Non-Binary", "Prefer Not To Say"] },
+    { text: "Year of Study", options: ["1", "2", "3", "4", "Postgrad"] },
+    { text: "Residence", options: ["Hostel", "With Family", "Rented", "PG"] },
+    { text: "Academic Workload", options: ["Light", "Manageable", "Heavy", "Overwhelming"] },
+    { text: "Placement/Job Worries", options: ["Not At All", "A Little", "Moderate", "A Lot", "Extremely"] },
+    { text: "Sleep Hours", options: ["<5", "5-6", "6-7", "7-8", ">8"] },
+    { text: "Sleep Quality", options: ["Very Poor", "Poor", "Fair", "Good", "Very Good"] },
+    { text: "Exercise Per Week", options: ["None", "1-2 Days", "3-4 Days", "5+ Days"] },
+    { text: "I Have Someone To Talk To When Stressed", options: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"] },
+    { text: "I Feel Lonely", options: ["Never", "Rarely", "Sometimes", "Often", "Always"] },
+    { text: "Alcohol Use", options: ["Never", "Occasionally", "Weekly", "Daily"] },
+    { text: "Tobacco Use", options: ["Never", "Occasionally", "Weekly", "Daily"] },
+    { text: "What Helps You Cope Best", options: ["Talking To Friends/Family", "Exercise", "Music", "Substance Use", "Nothing", "Counselling"] },
+    { text: "What Coping Strategy You Use As A Student?", options: ["Analyze The Situation And Handle It With Intellect", "Emotional Breakdown (Crying A Lot)", "Social Support (Friends, Family)"] },
+    { text: "Dietary Habits", options: ["Unhealthy", "Moderate", "Healthy"] },
+    { text: "Have You Ever Experienced Panic Attacks?", options: ["Yes", "No", "Sometimes", "Prefer Not To Say"] },
+    { text: "Have You Experienced Any Major Life Event In The Past 6 Months?", options: ["Bereavement", "Breakup / Relationship Issue", "Serious Illness", "Financial Difficulty", "Relocation / Moving Away From Home", "Other", "None"] },
+    { text: "How Satisfied Are You With Your Academic Performance In The Past Semester?", options: ["Very Dissatisfied", "Dissatisfied", "Neutral", "Satisfied", "Very Satisfied"] }
   ],
   anxiety: [
-    "Feeling nervous, anxious, or on edge?",
-    "Not being able to stop or control worrying?",
-    "Worrying too much about different things?",
-    "Trouble relaxing?",
-    "Being so restless that it is hard to sit still?",
-    "Becoming easily annoyed or irritable?",
-    "Feeling afraid, as if something awful might happen?"
+    { text: "Feeling nervous, anxious, or on edge?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] },
+    { text: "Not being able to stop or control worrying?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] },
+    { text: "Worrying too much about different things?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] },
+    { text: "Trouble relaxing?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] },
+    { text: "Being so restless that it is hard to sit still?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] },
+    { text: "Becoming easily annoyed or irritable?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] },
+    { text: "Feeling afraid, as if something awful might happen?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"] }
   ],
   stress: [
-    "I found it hard to wind down",
-    "I tended to over-react to situations",
-    "I felt that I was using a lot of nervous energy",
-    "I found myself getting agitated",
-    "I found it difficult to relax",
-    "I was intolerant of anything that kept me from getting on with what I was doing",
-    "I felt that I was rather touchy"
+    { text: "I found it hard to wind down", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] },
+    { text: "I tended to over-react to situations", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] },
+    { text: "I felt that I was using a lot of nervous energy", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] },
+    { text: "I found myself getting agitated", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] },
+    { text: "I found it difficult to relax", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] },
+    { text: "I was intolerant of anything that kept me from getting on with what I was doing", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] },
+    { text: "I felt that I was rather touchy", options: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"] }
   ]
-};
-
-const optionsData = {
-  depression: ["Never", "Sometimes", "Often", "Always"],
-  anxiety: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
-  stress: ["Did Not Apply To Me At All", "Applied To Me To Some Degree", "Applied To Me To A Considerable Degree", "Applied To Me Very Much"]
 };
 
 const Forms = () => {
   const [activeForm, setActiveForm] = useState(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [result, setResult] = useState(null);
 
   const handleNext = () => {
     if (answers[currentQ] !== undefined) {
@@ -57,6 +67,7 @@ const Forms = () => {
       alert("Please select an option before submitting.");
       return;
     }
+
     console.log("User Answers:", answers);
     alert("Form submitted!");
     setActiveForm(null);
@@ -68,20 +79,17 @@ const Forms = () => {
     if (!activeForm) return null;
 
     const questions = questionsData[activeForm];
-    const options = optionsData[activeForm];
     const isLast = currentQ === questions.length - 1;
+    const qObj = questions[currentQ];
 
     return (
       <section className="form-section">
         <h2>{activeForm.charAt(0).toUpperCase() + activeForm.slice(1)} Screening</h2>
-        <p className="form-instruction">
-          Answer the following question based on how you have felt recently.
-        </p>
         <form onSubmit={handleSubmit}>
           <div className="question">
-            <p className="question-text">{currentQ + 1}. {questions[currentQ]}</p>
+            <p className="question-text">{currentQ + 1}. {qObj.text}</p>
             <div className="options">
-              {options.map((opt, idx) => (
+              {qObj.options.map((opt, idx) => (
                 <label 
                   key={idx} 
                   className={`option-label ${answers[currentQ] === opt ? "selected" : ""}`}
@@ -128,17 +136,24 @@ const Forms = () => {
         {["depression", "anxiety", "stress"].map(type => (
           <button 
             key={type} 
-            onClick={() => { setActiveForm(type); setCurrentQ(0); setAnswers({}); }}
+            onClick={() => { setActiveForm(type); setCurrentQ(0); setAnswers({}); setResult(null); }}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)} 
             <span className="btn-info">
-              {type === "depression" ? "(Mood & Interest)" : type === "anxiety" ? "(Worry & Tension)" : "(Pressure & Relaxation)"}
+              {type === "depression" ? "(Survey)" : type === "anxiety" ? "(Worry & Tension)" : "(Pressure & Relaxation)"}
             </span>
           </button>
         ))}
       </div>
 
       {renderForm()}
+      {result && (
+        <div className="result-box">
+          <h3>📊 Screening Result</h3>
+          <p><strong>Score:</strong> {result.score}</p>
+          <p><strong>Interpretation:</strong> {result.message}</p>
+        </div>
+      )}
     </div>
   );
 };
