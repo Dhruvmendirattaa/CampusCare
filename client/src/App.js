@@ -158,7 +158,7 @@ function App() {
           <Routes>
             {/* Main Pages */}
             <Route path="/" element={<Home />} />
-            <Route path="/teacher-login" element={<TeacherLogin/>}/>
+           { /* <Route path="/teacher-login" element={<TeacherLogin/>}/> */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/counsellor-sessions" element={<CounsellorSessions />} />
