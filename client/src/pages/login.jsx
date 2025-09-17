@@ -11,46 +11,47 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!username || !password) {
-      setError("Please fill in both Username and Password");
+  if (!username || !password) {
+    setError("Please fill in both Username and Password");
+    return;
+  }
+
+  setError("");
+  setLoading(true);
+
+  try {
+    const res = await fetch("http://localhost:5000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.message || "Login failed");
+      setLoading(false);
       return;
     }
 
-    setError("");
-    setLoading(true);
+    // ✅ Save token + user info + role
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("role", "student");   // 👈 ye line add karo
 
-    try {
-      const res = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+    setLoading(false);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        setLoading(false);
-        return;
-      }
-
-      // Save token + user info
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      setLoading(false);
-
-      // Redirect to dashboard
-      navigate("/dashboard");
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-      setLoading(false);
-    }
-  };
+    // Redirect to dashboard
+    navigate("/dashboard");
+  } catch (err) {
+    setError("Something went wrong. Please try again.");
+    setLoading(false);
+  }
+};
 
   return (
     <div className="login-container">
@@ -89,11 +90,18 @@ const Login = () => {
         <p className="signup-text">
           Don’t have an account? <Link to="/signup">Sign up now</Link>
         </p>
+         <p style={{ marginTop: "15px" }}>
+        
+        <Link to="/teacher-login" style={{ color: "#5843adff", textDecoration: "none", fontWeight: "bold" }}>
+          Login as Teacher / Counsellor
+        </Link>
+      </p>
 
         <div className="footer-links">
           <Link to="/privacy">Privacy Policy</Link>
           <Link to="/cookies">Cookies Settings</Link>
         </div>
+        
       </div>
     </div>
   );

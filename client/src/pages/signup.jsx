@@ -9,7 +9,7 @@ const Signup = () => {
     dob: "",
     age: "",
     institute: "",
-    year: "other",
+    year: "",
     course: "",
     role: "student", // 🔹 Default role
     username: "",
