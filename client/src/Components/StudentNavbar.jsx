@@ -55,7 +55,7 @@ const StudentNavbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/student-dashboard" className="nav-link" end>
+          <NavLink to="/dashboard" className="nav-link" end>
             Dashboard
           </NavLink>
         </li>
