@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
-import DearDiary from "../Components/DearDiary"; // ✅ import DearDiary
+import DearDiary from "../Components/DearDiary";
 import MoodTracker from "../Components/MoodTracker";
 
 const Dashboard = () => {
@@ -22,31 +22,11 @@ const Dashboard = () => {
           </div>
         );
 
-      case "events":
-        return (
-          <div className="tab-content">
-            <h2>Enrolled Seminars / Events</h2>
-            <ul>
-              <li>Mindfulness Seminar</li>
-              <li>Stress Management Workshop</li>
-            </ul>
-          </div>
-        );
-
       case "diary":
         return (
           <div className="tab-content">
             <h2>Dear Diary</h2>
-            {/* ✅ Render the fully functional DearDiary component */}
             <DearDiary />
-          </div>
-        );
-
-      case "analytics":
-        return (
-          <div className="tab-content">
-            <h2>Progress Analytics</h2>
-            <p>Mood trends, session progress, and activity insights will appear here.</p>
           </div>
         );
 
@@ -57,13 +37,17 @@ const Dashboard = () => {
           </div>
         );
 
-
       case "avatar":
         return (
           <div className="tab-content">
             <h2>Personalized Avatar</h2>
             <img src={avatar} alt="avatar" className="avatar-img" />
-            <input type="file" onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0]))} />
+            <input
+              type="file"
+              onChange={(e) =>
+                setAvatar(URL.createObjectURL(e.target.files[0]))
+              }
+            />
           </div>
         );
 
@@ -76,7 +60,9 @@ const Dashboard = () => {
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
-            <p>Your nickname is: <strong>{nickname}</strong></p>
+            <p>
+              Your nickname is: <strong>{nickname}</strong>
+            </p>
           </div>
         );
 
@@ -100,14 +86,42 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <h1>Mental Health Dashboard</h1>
       <div className="tabs">
-        <button onClick={() => setActiveTab("appointments")} className={activeTab === "appointments" ? "active" : ""}>Appointments</button>
-        <button onClick={() => setActiveTab("events")} className={activeTab === "events" ? "active" : ""}>Seminars / Events</button>
-        <button onClick={() => setActiveTab("diary")} className={activeTab === "diary" ? "active" : ""}>Dear Diary</button>
-        <button onClick={() => setActiveTab("analytics")} className={activeTab === "analytics" ? "active" : ""}>Progress Analytics</button>
-        <button onClick={() => setActiveTab("mood")} className={activeTab === "mood" ? "active" : ""}>Mood Tracker</button>
-        <button onClick={() => setActiveTab("avatar")} className={activeTab === "avatar" ? "active" : ""}>Avatar</button>
-        <button onClick={() => setActiveTab("nickname")} className={activeTab === "nickname" ? "active" : ""}>Nickname</button>
-        <button onClick={() => setActiveTab("downloads")} className={activeTab === "downloads" ? "active" : ""}>Downloads</button>
+        <button
+          onClick={() => setActiveTab("appointments")}
+          className={activeTab === "appointments" ? "active" : ""}
+        >
+          Appointments
+        </button>
+        <button
+          onClick={() => setActiveTab("diary")}
+          className={activeTab === "diary" ? "active" : ""}
+        >
+          Dear Diary
+        </button>
+        <button
+          onClick={() => setActiveTab("mood")}
+          className={activeTab === "mood" ? "active" : ""}
+        >
+          Mood Tracker
+        </button>
+        <button
+          onClick={() => setActiveTab("avatar")}
+          className={activeTab === "avatar" ? "active" : ""}
+        >
+          Avatar
+        </button>
+        <button
+          onClick={() => setActiveTab("nickname")}
+          className={activeTab === "nickname" ? "active" : ""}
+        >
+          Nickname
+        </button>
+        <button
+          onClick={() => setActiveTab("downloads")}
+          className={activeTab === "downloads" ? "active" : ""}
+        >
+          Downloads
+        </button>
       </div>
 
       <div className="tab-container">{renderTabContent()}</div>

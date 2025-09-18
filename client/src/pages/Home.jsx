@@ -1,6 +1,7 @@
 import React from "react";
 import "./Home.css";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext"; // ✅ get auth info
 
 const Feature = ({ title, text, icon }) => (
   <div className="feature-card" role="article" aria-label={title}>
@@ -14,6 +15,7 @@ const Feature = ({ title, text, icon }) => (
 
 const Home = () => {
   const navigate = useNavigate(); 
+  const { user, role } = useAuth(); // ✅ auth context
 
   return (
     <main className="home-container">
@@ -37,10 +39,11 @@ const Home = () => {
                 🚀 Personalise Your Feed
               </button>
             </Link>
-            <Link to ="/appointment">
-          
-            <button className="hero-btn ghost glow">✨ Book An Appointment Now </button>
-              </Link>
+            <Link to="/appointment">
+              <button className="hero-btn ghost glow">
+                ✨ Book An Appointment Now
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -124,10 +127,14 @@ const Home = () => {
       <section className="cta" aria-labelledby="cta-title">
         <h2 id="cta-title" className="fade-up">🚀 Ready to Start Your Wellness Journey?</h2>
         <p>Join thousands of students using CampusCare to build resilience and study smarter.</p>
-        <div className="cta-actions">
-          <button className="signup-btn glow">Join Now</button>
-          <button className="secondary">Talk to an Expert</button>
-        </div>
+
+        {/* ✅ Show only if not logged-in student */}
+        {!(user && role === "student") && (
+          <div className="cta-actions">
+            <button className="signup-btn glow">Join Now</button>
+            <button className="secondary">Talk to an Expert</button>
+          </div>
+        )}
       </section>
 
       {/* Floating Appointment Button */}
