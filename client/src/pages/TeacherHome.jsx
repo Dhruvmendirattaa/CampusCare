@@ -34,7 +34,7 @@ const TeacherHome = () => {
             <Link to="/counsellor-sessions">
               <button className="hero-btn primary glow">📅 View Sessions</button>
             </Link>
-            <Link to="/dashboard">
+            <Link to="/teacherdashboard">
               <button className="hero-btn ghost glow">📊 Open Dashboard</button>
             </Link>
           </div>
@@ -109,7 +109,7 @@ const TeacherHome = () => {
         <h2 id="cta-title" className="fade-up">🚀 Ready to Support Your Students Better?</h2>
         <p>Use CampusCare to balance academics with wellbeing and foster growth.</p>
         <div className="cta-actions">
-          <button className="signup-btn glow" onClick={() => navigate("/dashboard")}>
+          <button className="signup-btn glow" onClick={() => navigate("/teacherdashboard")}>
             Open Dashboard
           </button>
           <button className="secondary" onClick={() => navigate("/counsellor-sessions")}>
