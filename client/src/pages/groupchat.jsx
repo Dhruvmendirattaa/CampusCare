@@ -69,19 +69,15 @@ const GroupChat = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Send message
+  // Send message (don’t update state manually → let socket do it)
   const handleSend = async (e) => {
     e?.preventDefault();
     if (!text.trim()) return;
 
     try {
-      const res = await axiosInstance.post(`/messages/${groupId}`, {
+      await axiosInstance.post(`/messages/${groupId}`, {
         message: text,
         replyTo: replyTo?._id || null,
-      });
-      setMessages((prev) => {
-        if (prev.some((m) => m._id === res.data._id)) return prev;
-        return [...prev, res.data];
       });
       setText("");
       setReplyTo(null);
