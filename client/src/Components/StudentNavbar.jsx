@@ -49,33 +49,33 @@ const StudentNavbar = () => {
 
       {/* Middle Links */}
       <ul>
-         <li>
-                  <NavLink to="/" className="nav-link" end>
-                    Home
-                  </NavLink>
-                </li>
+        <li>
+          <NavLink to="/" className="nav-link" end>
+            Home
+          </NavLink>
+        </li>
         <li>
           <NavLink to="/student-dashboard" className="nav-link" end>
             Dashboard
           </NavLink>
         </li>
         <li>
-                  <NavLink to="/counsellor-sessions" className="nav-link">
-                    Counsellor Sessions
-                  </NavLink>
-                </li>
-               
-                <li>
-                  <NavLink to="/group-chat" className="nav-link">
-                   Peer Support
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/resource-hub" className="nav-link">
-                    Resource Hub
-                  </NavLink>
-                </li>
-              </ul>
+          <NavLink to="/counsellor-sessions" className="nav-link">
+            Counsellor Sessions
+          </NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/group-chat" className="nav-link">
+            Peer Support
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/resource-hub" className="nav-link">
+            Resource Hub
+          </NavLink>
+        </li>
+      </ul>
 
       {/* Right Side Profile + Logout */}
       <div className="nav-right">
