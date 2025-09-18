@@ -1,0 +1,168 @@
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(160deg, #e9fdf4, #d1f2eb);
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 1250px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffffaa;
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #155e63;
+  font-size: 2.5rem;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.tabs button {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 30px;
+  background: #d9f7f0;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #2f4f4f;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.tabs button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Tab Content */
+.tab-container {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  min-height: 350px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* Headings */
+.tab-content h2 {
+  margin-bottom: 20px;
+  color: #155e63;
+  font-size: 1.8rem;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Lists */
+.tab-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tab-content li {
+  margin-bottom: 12px;
+  background: #eafaf6;
+  padding: 12px 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.tab-content li:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Input fields */
+.tab-content input[type="text"], 
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 20px;
+  border: 1px solid #b2dfdb;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+textarea:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: #11998e;
+  box-shadow: 0 0 15px rgba(17,153,142,0.2);
+}
+
+/* Buttons */
+.tab-content button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.tab-content button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Avatar */
+.avatar-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 4px solid #11998e;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.avatar-img:hover {
+  transform: rotate(10deg) scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-content input[type="text"] {
+    width: 100%;
+  }
+}

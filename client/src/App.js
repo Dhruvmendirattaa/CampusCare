@@ -195,14 +195,16 @@ import AppointmentPage from "./pages/appointmentBooking";
 import ResourceHub from "./pages/resourceHub";
 import Forms from "./pages/Forms";
 import GroupChat from "./pages/groupchat";
-import TeacherLogin from "./pages/TeacherLogin";
+
 import TeacherHome from "./pages/TeacherHome";
+
 
 // Components inside Dashboard
 import DearDiary from "./Components/DearDiary";
 import MoodTracker from "./Components/MoodTracker";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import TeacherDashboard from "./pages/teacherdashboard";
 
 function App() {  
 const role = localStorage.getItem("role"); 
@@ -223,7 +225,7 @@ const role = localStorage.getItem("role");
           <Routes>
             {/* Main Pages */}
             <Route path="/" element={<Home />} />
-            <Route path="/teacher-login" element={<TeacherLogin />} />
+            {/*<Route path="/teacher-login" element={<TeacherLogin />} />*/}
             <Route path="/teacher-home" element={<TeacherHome />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -234,6 +236,7 @@ const role = localStorage.getItem("role");
             <Route path="/group-chat" element={<GroupChat />} />
 
             {/* Dashboard + Sub Pages */}
+            <Route path="/teacherdashboard" element={<TeacherDashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/dear-diary" element={<DearDiary />} />
             <Route path="/dashboard/mood-tracker" element={<MoodTracker />} />

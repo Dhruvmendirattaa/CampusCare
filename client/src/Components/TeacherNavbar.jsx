@@ -48,7 +48,7 @@ const TeacherNavbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/dashboard" className="nav-link">
+          <NavLink to="/teacherdashboard" className="nav-link">
             Dashboard
           </NavLink>
         </li>
