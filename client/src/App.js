@@ -15,7 +15,7 @@ import ResourceHub from "./pages/resourceHub";
 import Forms from "./pages/Forms";
 import GroupChat from "./pages/groupchat";
 import TeacherHome from "./pages/TeacherHome";
-
+import TeacherDashboard from "./pages/teacherdashboard";
 // Components inside Dashboard
 import DearDiary from "./Components/DearDiary";
 import MoodTracker from "./Components/MoodTracker";
@@ -63,6 +63,16 @@ function App() {
               element={
                 <ProtectedRoute allowedRole="teacher">
                   <TeacherHome />
+                </ProtectedRoute>
+              }
+
+            />
+
+            <Route
+              path="/teacherdashboard"
+              element={
+                <ProtectedRoute allowedRole="teacher">
+                  <TeacherDashboard/>
                 </ProtectedRoute>
               }
             />
