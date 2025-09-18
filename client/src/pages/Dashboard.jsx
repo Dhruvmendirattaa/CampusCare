@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
+import DearDiary from "../Components/DearDiary"; // ✅ import DearDiary
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("appointments");
   const [nickname, setNickname] = useState("User123");
   const [mood, setMood] = useState("");
-  const [diaryEntry, setDiaryEntry] = useState("");
   const [avatar, setAvatar] = useState("default-avatar.png");
 
   const renderTabContent = () => {
@@ -20,6 +20,7 @@ const Dashboard = () => {
             </ul>
           </div>
         );
+
       case "events":
         return (
           <div className="tab-content">
@@ -30,18 +31,16 @@ const Dashboard = () => {
             </ul>
           </div>
         );
+
       case "diary":
         return (
           <div className="tab-content">
             <h2>Dear Diary</h2>
-            <textarea
-              value={diaryEntry}
-              onChange={(e) => setDiaryEntry(e.target.value)}
-              placeholder="Write your thoughts..."
-            ></textarea>
-            <button>Save Entry</button>
+            {/* ✅ Render the fully functional DearDiary component */}
+            <DearDiary />
           </div>
         );
+
       case "analytics":
         return (
           <div className="tab-content">
@@ -49,6 +48,7 @@ const Dashboard = () => {
             <p>Mood trends, session progress, and activity insights will appear here.</p>
           </div>
         );
+
       case "mood":
         return (
           <div className="tab-content">
@@ -62,6 +62,7 @@ const Dashboard = () => {
             <button>Update Mood</button>
           </div>
         );
+
       case "avatar":
         return (
           <div className="tab-content">
@@ -70,6 +71,7 @@ const Dashboard = () => {
             <input type="file" onChange={(e) => setAvatar(URL.createObjectURL(e.target.files[0]))} />
           </div>
         );
+
       case "nickname":
         return (
           <div className="tab-content">
@@ -82,6 +84,7 @@ const Dashboard = () => {
             <p>Your nickname is: <strong>{nickname}</strong></p>
           </div>
         );
+
       case "downloads":
         return (
           <div className="tab-content">
@@ -92,6 +95,7 @@ const Dashboard = () => {
             </ul>
           </div>
         );
+
       default:
         return null;
     }
@@ -101,30 +105,14 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <h1>Mental Health Dashboard</h1>
       <div className="tabs">
-        <button onClick={() => setActiveTab("appointments")} className={activeTab === "appointments" ? "active" : ""}>
-          Appointments
-        </button>
-        <button onClick={() => setActiveTab("events")} className={activeTab === "events" ? "active" : ""}>
-          Seminars / Events
-        </button>
-        <button onClick={() => setActiveTab("diary")} className={activeTab === "diary" ? "active" : ""}>
-          Dear Diary
-        </button>
-        <button onClick={() => setActiveTab("analytics")} className={activeTab === "analytics" ? "active" : ""}>
-          Progress Analytics
-        </button>
-        <button onClick={() => setActiveTab("mood")} className={activeTab === "mood" ? "active" : ""}>
-          Mood Tracker
-        </button>
-        <button onClick={() => setActiveTab("avatar")} className={activeTab === "avatar" ? "active" : ""}>
-          Avatar
-        </button>
-        <button onClick={() => setActiveTab("nickname")} className={activeTab === "nickname" ? "active" : ""}>
-          Nickname
-        </button>
-        <button onClick={() => setActiveTab("downloads")} className={activeTab === "downloads" ? "active" : ""}>
-          Downloads
-        </button>
+        <button onClick={() => setActiveTab("appointments")} className={activeTab === "appointments" ? "active" : ""}>Appointments</button>
+        <button onClick={() => setActiveTab("events")} className={activeTab === "events" ? "active" : ""}>Seminars / Events</button>
+        <button onClick={() => setActiveTab("diary")} className={activeTab === "diary" ? "active" : ""}>Dear Diary</button>
+        <button onClick={() => setActiveTab("analytics")} className={activeTab === "analytics" ? "active" : ""}>Progress Analytics</button>
+        <button onClick={() => setActiveTab("mood")} className={activeTab === "mood" ? "active" : ""}>Mood Tracker</button>
+        <button onClick={() => setActiveTab("avatar")} className={activeTab === "avatar" ? "active" : ""}>Avatar</button>
+        <button onClick={() => setActiveTab("nickname")} className={activeTab === "nickname" ? "active" : ""}>Nickname</button>
+        <button onClick={() => setActiveTab("downloads")} className={activeTab === "downloads" ? "active" : ""}>Downloads</button>
       </div>
 
       <div className="tab-container">{renderTabContent()}</div>

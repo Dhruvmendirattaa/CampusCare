@@ -11,7 +11,7 @@ import groupRoutes from "./routes/groupRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { createGeneralGroup } from "./controller/groupController.js"; // ✅ import function
 import appointmentRoutes from "./routes/appointmentRoutes.js";
-
+import diaryRoutes from "./routes/diaryRoutes.js";
 
 dotenv.config();
 
@@ -41,6 +41,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/diary", diaryRoutes);
 
 // ✅ MongoDB Connection
 mongoose
