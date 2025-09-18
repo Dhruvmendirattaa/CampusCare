@@ -10,6 +10,8 @@ import userRoutes from "./routes/userRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { createGeneralGroup } from "./controller/groupController.js"; // ✅ import function
+import appointmentRoutes from "./routes/appointmentRoutes.js";
+
 
 dotenv.config();
 
@@ -38,6 +40,7 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 // ✅ MongoDB Connection
 mongoose
