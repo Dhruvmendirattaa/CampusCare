@@ -7,28 +7,60 @@
 }
 
 .mood-options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-top: 1.5rem;
+  gap: 1rem;
 }
 
-.mood-btn {
-  font-size: 2rem;
-  margin: 0.5rem;
-  padding: 1rem;
-  border: none;
-  background: white;
-  border-radius: 50%;
+.mood-checkbox {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s, background 0.3s;
+  font-size: 1.2rem;
 }
 
-.mood-btn:hover {
-  transform: scale(1.2);
-  background: #ffedff;
+.mood-checkbox input {
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
-.mood-btn.active {
+.mood-checkbox:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
   background: #ff4de1;
   color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: #e639b1;
+}
+
+.error {
+  color: red;
+  margin-top: 1rem;
 }
 
 .mood-result {
@@ -38,4 +70,21 @@
   padding: 1rem;
   border-radius: 10px;
   display: inline-block;
+}
+
+.pie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.pie-data {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.pie-data p {
+  margin: 0.3rem 0;
 }

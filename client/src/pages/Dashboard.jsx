@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
 import DearDiary from "../Components/DearDiary"; // ✅ import DearDiary
+import MoodTracker from "../Components/MoodTracker";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("appointments");
@@ -52,16 +53,10 @@ const Dashboard = () => {
       case "mood":
         return (
           <div className="tab-content">
-            <h2>Mood Tracker</h2>
-            <input
-              type="text"
-              placeholder="How are you feeling today?"
-              value={mood}
-              onChange={(e) => setMood(e.target.value)}
-            />
-            <button>Update Mood</button>
+            <MoodTracker />
           </div>
         );
+
 
       case "avatar":
         return (
