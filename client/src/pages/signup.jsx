@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext"; // ✅ import context
 import "./signup.css";
 
 const Signup = () => {
@@ -18,6 +19,7 @@ const Signup = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // ✅ get login() from context
 
   // 🔹 Age calculation
   const calculateAge = (dob) => {
@@ -47,7 +49,13 @@ const Signup = () => {
     e.preventDefault();
 
     // Required fields validation
-    if (!formData.name || !formData.nickname || !formData.dob || !formData.username || !formData.password) {
+    if (
+      !formData.name ||
+      !formData.nickname ||
+      !formData.dob ||
+      !formData.username ||
+      !formData.password
+    ) {
       setError("Please fill in all required fields");
       return;
     }
@@ -76,10 +84,16 @@ const Signup = () => {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-
+      // ✅ Update context + localStorage
+      login(data);
       alert("Signup successful!");
-      navigate("/dashboard");
+
+      // ✅ Redirect based on role
+      if (data.user.role === "teacher") {
+        navigate("/teacher-home");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error("Signup Error:", err);
       setError("Something went wrong, please try again.");
@@ -100,7 +114,6 @@ const Signup = () => {
         <p>Fill in your details</p>
 
         <form onSubmit={handleSubmit}>
-          {/* Full Name */}
           <input
             type="text"
             name="name"
@@ -109,7 +122,6 @@ const Signup = () => {
             onChange={handleChange}
           />
 
-          {/* Nickname */}
           <input
             type="text"
             name="nickname"
@@ -117,12 +129,6 @@ const Signup = () => {
             value={formData.nickname}
             onChange={handleChange}
           />
-
-          {/* Role Selection */}
-          <select name="role" value={formData.role} onChange={handleChange}>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-          </select>
 
           <input
             type="date"
