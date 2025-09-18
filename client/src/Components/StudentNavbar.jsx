@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext"; // ✅ import context
 import "./StudentNavbar.css";
 
 const StudentNavbar = () => {
+  const { logout } = useAuth(); // get logout from context
+  const navigate = useNavigate();
+
   const [studentName, setStudentName] = useState("");
   const [initials, setInitials] = useState("");
   const [bgColor, setBgColor] = useState("");
-  const navigate = useNavigate();
 
   // 🔹 Get logged-in student from localStorage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser && storedUser.username) {
-      setStudentName(storedUser.username);
+    if (storedUser && storedUser.name) {
+      setStudentName(storedUser.name);
     }
   }, []);
 
@@ -31,12 +34,10 @@ const StudentNavbar = () => {
     }
   }, [studentName]);
 
-  // 🔹 Logout function
+  // 🔹 Logout function using context
   const handleLogout = () => {
-    localStorage.removeItem("role");
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login"); // back to login page
+    logout(); // clears user and role from context + localStorage
+    navigate("/login"); // redirect to login page
   };
 
   return (
@@ -64,7 +65,6 @@ const StudentNavbar = () => {
             Counsellor Sessions
           </NavLink>
         </li>
-
         <li>
           <NavLink to="/group-chat" className="nav-link">
             Peer Support

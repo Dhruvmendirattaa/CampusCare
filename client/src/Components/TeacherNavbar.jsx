@@ -1,31 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext"; // ✅ import context
 import "./TeacherNavbar.css";
 
 const TeacherNavbar = () => {
-  const [teacherName, setTeacherName] = useState("Sania Gadi"); // yaha tum backend se bhi fetch kar sakti ho
+  const { logout } = useAuth(); // get logout function from context
+  const navigate = useNavigate();
+
+  const [teacherName, setTeacherName] = useState("Sania Gadi"); // default name
   const [initials, setInitials] = useState("");
   const [bgColor, setBgColor] = useState("");
 
+  // 🔹 Handle logout using context
   const handleLogout = () => {
-    localStorage.removeItem("role");
+    logout(); // clears user and role from context + localStorage
+    navigate("/login"); // redirect to login
   };
 
+  // 🔹 Generate initials + random background color
   useEffect(() => {
-    if (teacherName) {
-      const words = teacherName.trim().split(" ");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const name = storedUser?.name || teacherName;
+    setTeacherName(name);
+
+    if (name) {
+      const words = name.trim().split(" ");
       const init =
         words.length > 1
           ? words[0][0].toUpperCase() + words[1][0].toUpperCase()
           : words[0][0].toUpperCase();
       setInitials(init);
 
-      // random color generator
       const colors = ["#6366f1", "#f97316", "#10b981", "#ef4444", "#8b5cf6"];
       const random = colors[Math.floor(Math.random() * colors.length)];
       setBgColor(random);
     }
-  }, [teacherName]);
+  }, []);
 
   return (
     <nav className="navbar">
@@ -57,20 +67,15 @@ const TeacherNavbar = () => {
       {/* Right Side Profile + Logout */}
       <div className="nav-right">
         <div className="profile-container">
-          <div
-            className="profile-icon"
-            style={{ backgroundColor: bgColor }}
-          >
+          <div className="profile-icon" style={{ backgroundColor: bgColor }}>
             {initials}
           </div>
           <span className="profile-name">{teacherName}</span>
         </div>
 
-        <NavLink to="/login">
-          <button className="logout" onClick={handleLogout}>
-            Logout
-          </button>
-        </NavLink>
+        <button className="logout" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </nav>
   );
