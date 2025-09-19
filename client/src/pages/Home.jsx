@@ -91,16 +91,22 @@ const Home = () => {
         </div>
       </section>
 
-      {/* GAMES */}
-      <section className="games" aria-labelledby="games-title">
-        <h2 id="games-title">🎮 Relax with Mindful Games</h2>
-        <div className="game-grid">
-          <div className="game-card">🧩 Puzzle</div>
-          <div className="game-card">🎵 Music Quiz</div>
-          <div className="game-card">🖌️ Drawing Pad</div>
-          <div className="game-card">🧘 Meditation Timer</div>
-        </div>
-      </section>
+{/* GAMES */}
+<section className="games" aria-labelledby="games-title">
+  <h2 id="games-title">🎮 Relax with Mindful Games</h2>
+  <div className="game-grid">
+    <Link to="/bubble">
+      <div className="game-card">🧩 Bubble Game</div>
+    </Link>
+    <Link to="/bubblepop">
+      <div className="game-card">💥 Bubble Pop</div>
+    </Link>
+    <div className="game-card">🎵 Music Quiz</div>
+    <div className="game-card">🖌️ Drawing Pad</div>
+    <div className="game-card">🧘 Meditation Timer</div>
+  </div>
+</section>
+
 
       {/* ABOUT */}
       <section className="about slide-in" aria-labelledby="about-title">
