@@ -144,12 +144,7 @@ const Dashboard = () => {
         >
           Avatar
         </button>
-        <button
-          onClick={() => setActiveTab("nickname")}
-          className={activeTab === "nickname" ? "active" : ""}
-        >
-          Nickname
-        </button>
+       
         <button
           onClick={() => setActiveTab("downloads")}
           className={activeTab === "downloads" ? "active" : ""}

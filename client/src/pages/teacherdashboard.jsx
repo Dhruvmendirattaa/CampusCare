@@ -107,14 +107,7 @@ const TeacherDashboard = () => {
           </div>
         );
 
-      case "nickname":
-        return (
-          <div className="tab-content">
-            <h2>Nickname Keeper</h2>
-            <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} />
-            <p>Your nickname is: <strong>{nickname}</strong></p>
-          </div>
-        );
+      
 
       case "downloads":
         return (
@@ -139,7 +132,7 @@ const TeacherDashboard = () => {
         <button onClick={() => setActiveTab("requests")} className={activeTab === "requests" ? "active" : ""}>Appointment Requests</button>
         <button onClick={() => setActiveTab("seminars")} className={activeTab === "seminars" ? "active" : ""}>Add Seminars</button>
         <button onClick={() => setActiveTab("avatar")} className={activeTab === "avatar" ? "active" : ""}>Avatar</button>
-        <button onClick={() => setActiveTab("nickname")} className={activeTab === "nickname" ? "active" : ""}>Nickname</button>
+      
         <button onClick={() => setActiveTab("downloads")} className={activeTab === "downloads" ? "active" : ""}>Downloads</button>
       </div>
 

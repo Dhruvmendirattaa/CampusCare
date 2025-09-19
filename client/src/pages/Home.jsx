@@ -36,7 +36,7 @@ const Home = () => {
           <div className="hero-actions">
             <Link to="/Forms">
               <button className="hero-btn primary glow">
-                🚀 Personalise Your Feed
+                🚀  Lets Start with a Self Diagnosis
               </button>
             </Link>
             <Link to="/appointment">
@@ -69,7 +69,7 @@ const Home = () => {
           />
           <Feature
             title="Resources & Tools"
-            text="Guided exercises, study planners, and coping toolkits curated for students."
+            text="Relaxing videos and audios for mental peice balance."
             icon={<i className="fas fa-book-open"></i>}
           />
           <Feature

@@ -9,6 +9,36 @@
 body {
   background: linear-gradient(160deg, #f0f4ff, #d9e4ff);
 }
+.dashboard-container {
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+
+  /* Background Image */
+  background: url('D:\OneDrive\Desktop\SIH\CampusCare\client\public\uploads\dashboard.jpg') no-repeat center center/cover;
+
+  /* Overlay effect for readability */
+  position: relative;
+}
+
+.dashboard-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7); /* Light overlay */
+  z-index: 0;
+}
+
+.dashboard-container h1,
+.tabs,
+.tab-container {
+  position: relative;
+  z-index: 1; /* Content above overlay */
+}
 
 /* Dashboard Container */
 .dashboard-container {

@@ -107,3 +107,45 @@
   border-radius: 12px;
   border: none;
 }
+
+/* --- Tips & Tricks --- */
+.tip-item {
+  background: #ffffff;
+  margin: 12px 18px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 6px solid #3b82f6; /* Blue accent stripe */
+}
+
+.tip-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  border-left-color: #8b5cf6; /* Purple on hover */
+}
+
+/* Tip title */
+.tip-item h4 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Tip description */
+.tip-item p {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* Emoji / Checkmark spacing */
+.tip-item h4::before {
+
+  font-size: 1.1rem;
+  color: #22c55e; /* Green check */
+}

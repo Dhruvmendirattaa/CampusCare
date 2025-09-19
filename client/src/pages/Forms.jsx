@@ -51,7 +51,7 @@ const Forms = () => {
 
   const handleNext = () => {
     if (answers[currentQ] !== undefined) {
-      setCurrentQ(prev => prev + 1);
+      setCurrentQ((prev) => prev + 1);
     } else {
       alert("Please select an option before proceeding.");
     }
@@ -63,13 +63,49 @@ const Forms = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const questions = questionsData[activeForm];
+
     if (answers[currentQ] === undefined) {
       alert("Please select an option before submitting.");
       return;
     }
 
-    console.log("User Answers:", answers);
-    alert("Form submitted!");
+    let score = 0;
+    let message = "";
+
+    if (activeForm === "anxiety") {
+      // GAD-7 mapping
+      const gadMap = {
+        "Not at all": 0,
+        "Several days": 1,
+        "More than half the days": 2,
+        "Nearly every day": 3
+      };
+
+      questions.forEach((q, i) => {
+        const selected = answers[i];
+        if (selected && gadMap[selected] !== undefined) {
+          score += gadMap[selected];
+        }
+      });
+
+      if (score <= 4) message = "Minimal anxiety.";
+      else if (score <= 9) message = "Mild anxiety.";
+      else if (score <= 14) message = "Moderate anxiety.";
+      else message = "Severe anxiety — consider professional support.";
+    } else {
+      // Placeholder scoring for depression/stress
+      score = Object.keys(answers).length;
+      if (score < questions.length / 3)
+        message = "Low risk — You seem to be doing okay.";
+      else if (score < (2 * questions.length) / 3)
+        message = "Moderate risk — You might be experiencing some challenges.";
+      else message = "High risk — Consider reaching out for support.";
+    }
+
+    setResult({ score, message });
+
+    // Reset form for next use but keep result visible
     setActiveForm(null);
     setCurrentQ(0);
     setAnswers({});
@@ -87,20 +123,22 @@ const Forms = () => {
         <h2>{activeForm.charAt(0).toUpperCase() + activeForm.slice(1)} Screening</h2>
         <form onSubmit={handleSubmit}>
           <div className="question">
-            <p className="question-text">{currentQ + 1}. {qObj.text}</p>
+            <p className="question-text">
+              {currentQ + 1}. {qObj.text}
+            </p>
             <div className="options">
               {qObj.options.map((opt, idx) => (
-                <label 
-                  key={idx} 
+                <label
+                  key={idx}
                   className={`option-label ${answers[currentQ] === opt ? "selected" : ""}`}
                 >
-                  <input 
-                    type="radio" 
-                    name={`${activeForm}${currentQ}`} 
-                    value={opt} 
+                  <input
+                    type="radio"
+                    name={`${activeForm}${currentQ}`}
+                    value={opt}
                     checked={answers[currentQ] === opt}
-                    onChange={handleChange} 
-                  /> 
+                    onChange={handleChange}
+                  />
                   {opt}
                 </label>
               ))}
@@ -127,20 +165,29 @@ const Forms = () => {
   return (
     <div className="personalise-container">
       <p className="intro-text">
-        Welcome! Take a few minutes to complete your quick mental health screening. 
-        Choose a category below to get started. Your responses are private and will 
+        Welcome! Take a few minutes to complete your quick mental health screening.
+        Choose a category below to get started. Your responses are private and will
         help you understand your current mental state.
       </p>
 
       <div className="form-buttons">
-        {["depression", "anxiety", "stress"].map(type => (
-          <button 
-            key={type} 
-            onClick={() => { setActiveForm(type); setCurrentQ(0); setAnswers({}); setResult(null); }}
+        {["depression", "anxiety", "stress"].map((type) => (
+          <button
+            key={type}
+            onClick={() => {
+              setActiveForm(type);
+              setCurrentQ(0);
+              setAnswers({});
+              setResult(null);
+            }}
           >
-            {type.charAt(0).toUpperCase() + type.slice(1)} 
+            {type.charAt(0).toUpperCase() + type.slice(1)}
             <span className="btn-info">
-              {type === "depression" ? "(Survey)" : type === "anxiety" ? "(Worry & Tension)" : "(Pressure & Relaxation)"}
+              {type === "depression"
+                ? "(Survey)"
+                : type === "anxiety"
+                ? "(Worry & Tension)"
+                : "(Pressure & Relaxation)"}
             </span>
           </button>
         ))}
@@ -150,8 +197,12 @@ const Forms = () => {
       {result && (
         <div className="result-box">
           <h3>📊 Screening Result</h3>
-          <p><strong>Score:</strong> {result.score}</p>
-          <p><strong>Interpretation:</strong> {result.message}</p>
+          <p>
+            <strong>Score:</strong> {result.score}
+          </p>
+          <p>
+            <strong>Interpretation:</strong> {result.message}
+          </p>
         </div>
       )}
     </div>

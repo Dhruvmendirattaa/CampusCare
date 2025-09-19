@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../axiosInstance"; // Make sure this points to your Axios setup
+import axiosInstance from "../axiosInstance";
 import "./CounsellorSessions.css";
 
 const CounsellorSessions = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch events/seminars from backend
+  // check login status from localStorage
+  const isLoggedIn = !!localStorage.getItem("token");
+
   const fetchEvents = async () => {
     try {
-      const res = await axiosInstance.get("/seminars"); // Endpoint to get seminars
+      const res = await axiosInstance.get("/seminars");
       setEvents(res.data);
       setLoading(false);
     } catch (err) {
@@ -27,12 +29,16 @@ const CounsellorSessions = () => {
   return (
     <div className="counsellor-container">
       <h1 className="counsellor-title">College Events</h1>
-      <p className="counsellor-subtitle">
-        Stay updated with upcoming events and opportunities happening on campus.
-      </p>
+
+      {/* sirf jab login nahi hai tabhi dikhao */}
+      {!isLoggedIn && (
+        <p className="counsellor-subtitle">
+          Please Login to access ON-CAMPUS Counselling Sessions and Events/Seminars.
+        </p>
+      )}
 
       {events.length === 0 ? (
-        <p>No upcoming events.</p>
+        <p>No events found.</p>
       ) : (
         <div className="events-grid">
           {events.map((event) => (
