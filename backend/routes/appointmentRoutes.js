@@ -2,21 +2,21 @@ import express from "express";
 import {
   bookAppointment,
   getMyAppointments,
-  getAllAppointments,
+  cancelAppointment,
   updateStatus,
-  cancelAppointment,   // ✅ import
-} from "../controller/appointmentController.js"; // check path typo: should be `controllers` not `controller`
-import { protect } from "../middleware/auth.js";
+  getMyAppointmentsForTeacher, // 🔹 add this
+} from "../controller/appointmentController.js";
+import { protect, teacherOnly } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Student
+// Student routes
 router.post("/", protect, bookAppointment);
 router.get("/my", protect, getMyAppointments);
-router.delete("/:id", protect, cancelAppointment);   // ✅ cancel
+router.delete("/:id", protect, cancelAppointment);
 
-// Teacher
-router.get("/", protect, getAllAppointments);
+// Teacher routes
+router.get("/teacher-requests", protect, teacherOnly, getMyAppointmentsForTeacher);
 router.put("/:id", protect, updateStatus);
 
 export default router;

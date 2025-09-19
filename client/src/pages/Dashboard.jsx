@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosInstance";
 import "./Dashboard.css";
 import DearDiary from "../Components/DearDiary";
 import MoodTracker from "../Components/MoodTracker";
@@ -9,23 +11,55 @@ const Dashboard = () => {
   const [mood, setMood] = useState("");
   const [avatar, setAvatar] = useState("default-avatar.png");
 
+  // 🔹 Appointments state
+  const [appointments, setAppointments] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const res = await axiosInstance.get("/appointments/my");
+        setAppointments(res.data);
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+      }
+    };
+
+    if (activeTab === "appointments") {
+      fetchAppointments();
+    }
+  }, [activeTab]);
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "appointments":
         return (
           <div className="tab-content">
-            <h2>Scheduled Appointments</h2>
-            <ul>
-              <li>Therapy Session - 20 Sep, 4:00 PM</li>
-              <li>Meditation Workshop - 25 Sep, 6:00 PM</li>
-            </ul>
+            <h2>📋 My Counseling Requests</h2>
+            {appointments.length === 0 ? (
+              <p>No requests yet.</p>
+            ) : (
+              <ul className="appointment-list">
+                {appointments.map((a) => (
+                  <li key={a._id} className="appointment-card">
+                    <p><strong>Counselor:</strong> {a.counselorName}</p>
+                    <p><strong>Specialization:</strong> {a.counselorSpecialization}</p>
+                    <p><strong>Date:</strong> {a.date}</p>
+                    <p><strong>Time:</strong> {a.time}</p>
+                    <p><strong>Status:</strong> {a.status}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <button className="manage-btn" onClick={() => navigate("/appointment")}>
+              ⚙️ Manage Requests
+            </button>
           </div>
         );
 
       case "diary":
         return (
           <div className="tab-content">
-            <h2>Dear Diary</h2>
             <DearDiary />
           </div>
         );

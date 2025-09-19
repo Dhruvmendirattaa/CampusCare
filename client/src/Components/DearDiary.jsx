@@ -10,7 +10,7 @@ const DearDiary = () => {
 
   // ✅ Get user and token from AuthContext
   const { user } = useAuth();
-  const token = user?.token; // Use token from context instead of localStorage
+  const token = user ? localStorage.getItem("token") : null;
 
   // Fetch diary entries from backend
   const fetchEntries = async () => {

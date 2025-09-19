@@ -13,8 +13,7 @@ import { createGeneralGroup } from "./controller/groupController.js"; // ✅ imp
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 import diaryRoutes from "./routes/diaryRoutes.js";
 import moodRoutes from "./routes/moodRoutes.js";
-
-
+import seminarRoutes from "./routes/seminarRoutes.js";
 
 dotenv.config();
 
@@ -46,6 +45,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/diary", diaryRoutes);
 app.use("/api/mood", moodRoutes);
+app.use("/api/seminars", seminarRoutes);
 
 // ✅ MongoDB Connection
 mongoose

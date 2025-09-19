@@ -10,7 +10,7 @@ const Signup = () => {
     dob: "",
     age: "",
     institute: "",
-    year: "",
+    year: "1st",
     course: "",
     role: "student", // 🔹 Default role
     username: "",
@@ -61,14 +61,14 @@ const Signup = () => {
     }
 
     // Validate student fields only if role = student and institute is provided
-    if (
-      formData.role === "student" &&
-      formData.institute &&
-      (!formData.year || !formData.course)
-    ) {
-      setError("Please fill in Year and Course for the institute");
-      return;
-    }
+    // if (
+    //   formData.role === "student" &&
+    //   formData.institute &&
+    //   (!formData.year || !formData.course)
+    // ) {
+    //   setError("Please fill in Year and Course for the institute");
+    //   return;
+    // }
 
     try {
       const res = await fetch("http://localhost:5000/api/users/signup", {

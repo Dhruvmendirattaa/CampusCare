@@ -10,18 +10,19 @@ const AppointmentPage = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [appointments, setAppointments] = useState([]);
+  const [counselors, setCounselors] = useState([]); // 🔹 fetched from DB
 
-  // Hardcoded counselors (could later fetch from backend)
-  const counselors = [
-    { name: "Dr. Meera Sharma", specialization: "Clinical Psychologist", experience: "8 years", bio: "Expert in stress management and student counseling.", img: "/uploads/meera.jpg" },
-    { name: "Dr. Rohan Verma", specialization: "Behavioral Therapist", experience: "5 years", bio: "Helps students with anxiety, focus, and study habits.", img: "/uploads/rohan.jpg" },
-    { name: "Dr. Aditi Kapoor", specialization: "Cognitive Therapist", experience: "6 years", bio: "Specializes in emotional well-being and mindfulness.", img: "/uploads/aditi.jpg" },
-    { name: "Dr. Karan Singh", specialization: "Family Counselor", experience: "7 years", bio: "Focuses on relationship and family support for students.", img: "/uploads/karan.jpg" },
-    { name: "Dr. Neha Iyer", specialization: "Child & Adolescent Psychologist", experience: "9 years", bio: "Helps young adults manage stress and transitions.", img: "/uploads/neha.jpg" },
-    { name: "Dr. Arjun Desai", specialization: "Motivational Coach", experience: "4 years", bio: "Guides on career goals and overcoming challenges.", img: "/uploads/arjun.jpg" },
-  ];
+  // 🔹 Fetch teachers from backend
+  const fetchCounselors = async () => {
+    try {
+      const res = await axiosInstance.get("/users/teachers");
+      setCounselors(res.data);
+    } catch (err) {
+      console.error("Error fetching teachers:", err);
+    }
+  };
 
-  // 🔹 Fetch existing appointments
+  // 🔹 Fetch student’s appointments
   const fetchAppointments = async () => {
     try {
       const res = await axiosInstance.get("/appointments/my");
@@ -32,6 +33,7 @@ const AppointmentPage = () => {
   };
 
   useEffect(() => {
+    fetchCounselors();
     fetchAppointments();
   }, []);
 
@@ -41,8 +43,7 @@ const AppointmentPage = () => {
     try {
       setLoading(true);
       const res = await axiosInstance.post("/appointments", {
-        counselorName: selectedCounselor.name,
-        counselorSpecialization: selectedCounselor.specialization,
+        teacherId: selectedCounselor._id,
         date,
         time,
       });
@@ -51,7 +52,7 @@ const AppointmentPage = () => {
       setDate("");
       setTime("");
       setSelectedCounselor(null);
-      fetchAppointments(); // refresh list after booking
+      fetchAppointments();
     } catch (err) {
       alert(err.response?.data?.message || "Error booking appointment");
     } finally {
@@ -59,7 +60,7 @@ const AppointmentPage = () => {
     }
   };
 
-  // 🔹 Handle cancel appointment
+  // 🔹 Cancel appointment
   const cancelAppointment = async (id) => {
     if (!window.confirm("Are you sure you want to cancel this appointment?")) return;
     try {
@@ -80,7 +81,7 @@ const AppointmentPage = () => {
 
       {success && <div className="success-msg">{success}</div>}
 
-      {/* 📋 Section 1: My Requests */}
+      {/* 📋 My Requests */}
       <section className="card">
         <h2>📋 My Appointment Requests</h2>
         {appointments.length === 0 ? (
@@ -103,18 +104,21 @@ const AppointmentPage = () => {
         )}
       </section>
 
-      {/* 📅 Section 2: Booking Flow */}
+      {/* 📅 Booking Flow */}
       <section className="card">
         {step === 1 && (
           <div className="step">
             <h3>👩‍⚕️ Available Counselors</h3>
             <div className="counselor-grid">
-              {counselors.map((c, index) => (
-                <div key={index} className="counselor-card">
-                  <img src={c.img} alt={c.name} className="counselor-pic" />
+              {counselors.map((c) => (
+                <div key={c._id} className="counselor-card">
                   <h4>{c.name}</h4>
-                  <p><strong>{c.specialization}</strong> • {c.experience}</p>
-                  <button className="request-btn" onClick={() => setStep(2) || setSelectedCounselor(c)}>
+                  <p><strong>{c.course || "No specialization"}</strong></p>
+                  <p>{c.bio}</p>
+                  <button
+                    className="request-btn"
+                    onClick={() => setStep(2) || setSelectedCounselor(c)}
+                  >
                     📩 Request Appointment
                   </button>
                 </div>
@@ -123,6 +127,7 @@ const AppointmentPage = () => {
           </div>
         )}
 
+        {/* Date selection */}
         {step === 2 && (
           <div className="step">
             <h3>📅 Select Date</h3>
@@ -140,6 +145,7 @@ const AppointmentPage = () => {
           </div>
         )}
 
+        {/* Time selection */}
         {step === 3 && (
           <div className="step">
             <h3>⏰ Select Time</h3>
@@ -156,14 +162,14 @@ const AppointmentPage = () => {
           </div>
         )}
 
+        {/* Confirmation */}
         {step === 4 && selectedCounselor && (
           <div className="step">
             <h3>👤 Counselor Details</h3>
             <div className="counselor-card large">
-              <img src={selectedCounselor.img} alt={selectedCounselor.name} className="counselor-pic" />
               <h4>{selectedCounselor.name}</h4>
-              <p><strong>{selectedCounselor.specialization}</strong> • {selectedCounselor.experience}</p>
-              <p className="bio">{selectedCounselor.bio}</p>
+              <p><strong>{selectedCounselor.course || "N/A"}</strong></p>
+              <p>{selectedCounselor.bio}</p>
               <p><strong>Date:</strong> {date}</p>
               <p><strong>Time:</strong> {time}</p>
               <button className="submit-btn" onClick={handleSubmit} disabled={loading}>

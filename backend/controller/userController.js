@@ -104,3 +104,16 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+// Get all teachers
+export const getAllTeachers = async (req, res) => {
+  try {
+    const teachers = await User.find({ role: "teacher" }).select(
+      "name bio institute course year role"
+    );
+    res.json(teachers);
+  } catch (err) {
+    console.error("Error fetching teachers:", err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};

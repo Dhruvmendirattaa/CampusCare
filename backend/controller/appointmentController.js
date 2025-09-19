@@ -1,15 +1,23 @@
 // backend/controllers/appointmentController.js
-import Appointment from "../models/appointment.js";
-
 // ✅ Student books an appointment
+// backend/controllers/appointmentController.js
+import Appointment from "../models/appointment.js";
+import User from "../models/user.js";
+
 export const bookAppointment = async (req, res) => {
   try {
-    const { counselorName, counselorSpecialization, date, time } = req.body;
+    const { teacherId, date, time } = req.body; // 🔹 send teacherId from frontend
+
+    const teacher = await User.findById(teacherId);
+    if (!teacher || teacher.role !== "teacher") {
+      return res.status(400).json({ message: "Invalid teacher" });
+    }
 
     const appointment = await Appointment.create({
-      student: req.user._id, // taken from JWT middleware
-      counselorName,
-      counselorSpecialization,
+      student: req.user._id,
+      teacher: teacher._id,
+      counselorName: teacher.name,
+      counselorSpecialization: teacher.course || "N/A",
       date,
       time,
     });
@@ -20,6 +28,7 @@ export const bookAppointment = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // ✅ Get student’s own appointments
 export const getMyAppointments = async (req, res) => {
@@ -32,14 +41,16 @@ export const getMyAppointments = async (req, res) => {
 };
 
 // ✅ Teacher (admin) can see all
-export const getAllAppointments = async (req, res) => {
+export const getMyAppointmentsForTeacher = async (req, res) => {
   try {
-    const appointments = await Appointment.find().populate("student", "name username");
+    const appointments = await Appointment.find({ teacher: req.user._id })
+      .populate("student", "name username");
     res.json(appointments);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // ✅ Teacher approves/rejects
 export const updateStatus = async (req, res) => {

@@ -8,6 +8,11 @@ const appointmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    teacher: { // 🔹 Add teacher reference
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     counselorName: { type: String, required: true },
     counselorSpecialization: { type: String, required: true },
     date: { type: String, required: true },
